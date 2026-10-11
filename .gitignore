@@ -1,0 +1,46 @@
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.pfx
+*.p12
+secrets.json
+appsettings.Local.json
+appsettings.*.Local.json
+
+# Private instance data and bootstrap configuration
+bootstrap.json
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+/data/
+/userdata/
+/backups/
+
+# .NET, frontend and Rust build output
+**/bin/
+**/obj/
+**/node_modules/
+**/dist/
+**/target/
+**/coverage/
+**/TestResults/
+**/playwright-report/
+**/test-results/
+*.tsbuildinfo
+
+# Local IDE state and diagnostics
+.vs/
+.idea/
+*.user
+*.suo
+*.log
+*.dmp
+Thumbs.db
+.DS_Store
