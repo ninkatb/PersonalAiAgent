@@ -4,7 +4,7 @@ Plan privatnog AI agenta za jednog vlasnika po instalaciji: razgovori, mejlovi, 
 
 ## Trenutno stanje
 
-Projekat trenutno sadrži pravila rada i razvojne specifikacije. Aplikacioni kod, build konfiguracija, zavisnosti i automatizovani testovi još nisu dodati; aktivna implementaciona faza nije označena. Zato trenutno nema komandi za build ili pokretanje aplikacije. Promjena jezičkih zahtjeva ne označava nijednu fazu kao završenu.
+Vlasnik je 12.10.2026. izričito aktivirao **Fazu 01 — Foundation** i odobrio početak implementacije. **STORY-024 je u toku:** dodani su .NET 10 solution, domenski portovi, test projekti, React/Vite navigacija sa tri lokalizacije i ograničeni Tauri shell. .NET i frontend provjere prolaze; native desktop build i Windows dokaz još nisu završeni. Faza 01 ima nula završenih priča i nije završena.
 
 [BMAD opis proizvoda](docs/bmad/product-brief.md), [PRD](docs/bmad/prd.md), [arhitektura](docs/bmad/architecture.md) i [UX specifikacija](docs/bmad/ux-design.md) izrađeni su za cijeli definisani MVP iz faza 01–09. Početni korisnik je samo vlasnik; cilj su ušteda vremena i pravovremeno završavanje obaveza, sa fokusom na važne mejlove, prijedloge odgovora i podsjetnike. Rok i brojčani ciljevi još nisu potvrđeni. UX definiše 16 ekrana, osam glavnih tokova, stanja greške/odobrenja, pristupačnost i tri lokalizacije. Na zahtjev vlasnika pripremljen je [uslovni plan sprinta 1](docs/bmad/sprint-plan.md), bez kalendarskog roka.
 
@@ -14,7 +14,7 @@ Planirani stack je Windows 11 x64, Tauri 2, React/TypeScript strict, ASP.NET Cor
 
 Arhitektura bira modularni .NET backend i ograničeni Rust IPC most; renderer ne prima sačuvane tajne ili sesijski token. Razrađeni su odobrenje vezano za konačne argumente, cloud politika, šifrovani model podataka, jedan naknadni pregled i DST pravila. [Provjera spremnosti](docs/bmad/gate-check.md) daje `CONDITIONAL PASS`: svih 28 FR i 12 NFR imaju projektantsko mapiranje, uz dva djelimično razrađena NFR. Native SQLCipher distribucija/licenca, konačni KDF izbor i recovery/crash dokaz ostaju kritičan uslov prije implementacije vaulta; nema plaintext fallback-a. To je provjera dizajna, bez aplikacionog builda ili testova.
 
-Trajne odluke: [ADR-002 — lokalni transport](docs/architecture/ADR-002_LOCAL_TRANSPORT.md), [ADR-003 — vault i izvršavanje](docs/architecture/ADR-003_VAULT_EXECUTION.md), [ADR-004 — raspored i izvori](docs/architecture/ADR-004_SCHEDULER_SOURCES.md) i [ADR-005 — pamćenje teme](docs/architecture/ADR-005_THEME_PERSISTENCE.md). Postojeći ADR-001 ostaje mjerodavan za jezike. BMAD evidencija razlikuje završenu provjeru od bezuslovnog prolaza; sprint i implementacija još nisu počeli. Nova gate provjera dopunjene bootstrap allowlist-e potrebna je prije pogođenih priča.
+Trajne odluke: [ADR-002 — lokalni transport](docs/architecture/ADR-002_LOCAL_TRANSPORT.md), [ADR-003 — vault i izvršavanje](docs/architecture/ADR-003_VAULT_EXECUTION.md), [ADR-004 — raspored i izvori](docs/architecture/ADR-004_SCHEDULER_SOURCES.md) i [ADR-005 — pamćenje teme](docs/architecture/ADR-005_THEME_PERSISTENCE.md). Postojeći ADR-001 ostaje mjerodavan za jezike. BMAD evidencija razlikuje završenu provjeru od bezuslovnog prolaza; STORY-024 je započeta, a sprint ostaje uslovan bez potvrđenog kapaciteta. Nova gate provjera dopunjene bootstrap allowlist-e potrebna je prije pogođenih priča.
 
 Vlasnik je potvrdio dvije teme, svijetlu i tamnu, uz trajno pamćenje izbora za buduća prijavljivanja. `ui.theme` je nezavisna od oba jezika, čuva se kanonski u šifrovanoj bazi i ima nesenzitivnu bootstrap kopiju za zaključani ekran. Minimalna bootstrap allowlist-a sada obuhvata samo `ui.locale` i `ui.theme`. Promjena teme/jezika ne mijenja dozvole; neuspješan upis čuva prethodni izbor. Ova dopuna je projektovana, još nije implementirana.
 
@@ -40,10 +40,43 @@ BMAD vještine su već instalirane u lokalnom Codex okruženju. Projekat je inic
 
 Za provjeru stanja pošalji `bmad:status`, a za preporuku narednog BMAD koraka `bmad:next`. Nivo projekta je 3 zbog opsega desktop aplikacije, vaulta i integracija; tip `other` označava desktop aplikaciju. BMAD konfiguracija ne mijenja postojeći razvojni plan niti označava njegove faze završenim. Planiranje sprinta je završeno uslovno; datumi i potvrđeni kapacitet ostaju nepoznati, a obavezani obim je nula.
 
-Osnova je razložena na [sedam priča STORY-024–030](docs/bmad/sprint-plan.md): ukupno 33 relativna boda, od čega su prve tri kandidat sprinta 1 sa 15 bodova, a četiri preostale imaju 18 bodova bez dodijeljenog budućeg sprinta. Procjene i scenario kapaciteta od 16 bodova služe planiranju i nisu obećanje isporuke. Svi statusi priča su not_started. Postojeći PRD kandidati STORY-001–023 nisu prepisani. Struktura u BMAD arhitekturi usklađena je sa nazivima PersonalAI.* i apps/web + apps/desktop iz mjerodavne Faze 01.
+Osnova je razložena na [sedam priča STORY-024–030](docs/bmad/sprint-plan.md): ukupno 33 relativna boda, od čega su prve tri kandidat sprinta 1 sa 15 bodova, a četiri preostale imaju 18 bodova bez dodijeljenog budućeg sprinta. Procjene i scenario kapaciteta od 16 bodova služe planiranju i nisu obećanje isporuke. STORY-024 je `in_progress`; ostale su `not_started`. Postojeći PRD kandidati STORY-001–023 nisu prepisani. Struktura prati PersonalAI.* i apps/web + apps/desktop iz mjerodavne Faze 01.
 
-Dokumentacioni plan se provjerava komandom `python docs/bmad/validate-sprint-plan.py`; potrebno je Python okruženje sa PyYAML 6.0.3 iz [zaključane zavisnosti validatora](docs/bmad/requirements-validation.txt). Izolovane komande i stvarni rezultati su u [planu sprinta](docs/bmad/sprint-plan.md). Provjera pokriva YAML, priče, zbir, zavisnosti, acceptance mapiranje i lokalne veze; prošlo je i sedam negativnih kontrola. Ovo nije aplikacioni build ili dokaz završene faze.
+Dokumentacioni plan se provjerava komandom `python docs/bmad/validate-sprint-plan.py --self-test`; potrebno je Python okruženje sa PyYAML 6.0.3 iz [zaključane zavisnosti validatora](docs/bmad/requirements-validation.txt). Izolovane komande i stvarni rezultati su u [planu sprinta](docs/bmad/sprint-plan.md). Provjera pokriva YAML, priče, zbir, zavisnosti, acceptance mapiranje, lokalne veze i usklađenu autorizaciju Faze 01. Pozitivne i negativne kontrole pokrivaju plan prije aktivacije i aktivaciju bez početka sprinta. Ovo nije aplikacioni build ili dokaz završene faze.
 
 Prije implementacije pročitati [AGENTS.md](AGENTS.md), [početni plan](docs/codex-plan/00_START_HERE.md), [odluke](docs/codex-plan/DECISIONS.md), [specifikaciju lokalizacije](docs/codex-plan/I18N_SPEC.md) i samo aktivni fajl faze. Pravila zahtijevaju sva tri prevoda, paritet kataloga i testove čuvanja jezika, formatiranja i kompatibilnosti.
 
-Za početak implementacije vlasnik treba eksplicitno da zatraži Fazu 01. Tada se potvrđuje kapacitet/obim, ponovo čitaju mjerodavni dokumenti i započinje [STORY-024](docs/stories/STORY-024.md). Plan prati otvorene uslove arhitekture; G-001 za vault ostaje otvoren. Sve tri lokalizacije važe od prvog builda; trajni jezik, tema i Windows dokaz dio su preostalog obima iste faze. Faza 01 završava tek sa svih šest acceptance dokaza i potvrđenom dopunom teme. Ne prelaziti na narednu fazu bez zahtjeva vlasnika.
+Zahtjev vlasnika „Sljedeći korak: izričito aktiviranje Faze 01” i odgovor „Aktivacija i početak implementacije” odobravaju tekući rad na Fazi 01. Sljedeći razvojni korak je završetak desktop dokaza za [STORY-024](docs/stories/STORY-024.md), pa zaštićeni transport kroz STORY-025. Kapacitet i rok ostaju nepotvrđeni. Plan prati otvorene uslove arhitekture; G-001 za vault ostaje otvoren. Sve tri lokalizacije važe od prvog builda; trajni jezik, tema i Windows dokaz dio su preostalog obima iste faze. Faza 01 završava tek sa svih šest acceptance dokaza i potvrđenom dopunom teme. Ne prelaziti na narednu fazu bez zahtjeva vlasnika.
+
+## Razvoj osnove
+
+Potrebni alati: .NET SDK **10.0.401**, Node.js **24.19.0** i Rust **1.99.0**. Verzije paketa su zaključane u NuGet, npm i Cargo lockfile fajlovima; NuGet verzije su centralizovane u `Directory.Packages.props`. Licence, rezultati i svih šest kriterijuma nalaze se u [izvještaju početka implementacije](docs/architecture/FOUNDATION_STATUS.md).
+
+U pripremljenom Linux cloud okruženju:
+
+```bash
+cd /workspace/PersonalAiAgent
+source /workspace/.personal-ai-agent-setup/activate.sh
+bash scripts/verify-foundation.sh
+npm --prefix apps/web run dev
+```
+
+Frontend razvojni server radi samo na loopback adresi. Prikazuje prazne module i zaključano stanje; trenutno nema sidecar veze ili otključavanja. Izbor jezika važi tokom tekućeg pokretanja; trajni bootstrap i tema još nisu implementirani.
+
+Za instalaciju zavisnosti na računaru sa navedenim alatima:
+
+```text
+dotnet restore PersonalAI.sln --locked-mode
+npm ci --prefix apps/web
+npm ci --prefix apps/desktop
+dotnet build PersonalAI.sln --no-restore
+dotnet test PersonalAI.sln --no-build --no-restore
+npm --prefix apps/web run build
+npm --prefix apps/web run lint
+npm --prefix apps/web run test:catalogs
+npm --prefix apps/web test
+```
+
+Za Windows 11 x64 dodatno su potrebni Microsoft C++ Build Tools sa Desktop development with C++, MSVC Rust toolchain i WebView2, prema službenim Tauri preduslovima. Iz korijena projekta `npm --prefix apps/desktop run dev` pokreće shell, a `npm --prefix apps/desktop run build -- --no-bundle` priprema executable. Te Windows komande još nisu izvršene. Installer i ugrađeni .NET sidecar dolaze kroz STORY-026/030; trenutno ne postoji paket za krajnju instalaciju.
+
+U Linux cloud okruženju prošli su .NET build, 4 .NET testa, frontend build/typecheck/lint, paritet 3 kataloga sa 28 semantičkih ključeva i 10 UI testova. Native `cargo check` staje na nedostajućem GLib/GTK/WebKit razvojnom okruženju. GitHub Actions konfiguracija je dodana, ali CI i Windows smoke provjere još nisu izvršeni.

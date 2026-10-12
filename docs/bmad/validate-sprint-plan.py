@@ -1,6 +1,7 @@
 """Read-only validation of the conditional BMAD sprint plan (PyYAML 6.0.3)."""
 
 from copy import deepcopy
+from datetime import datetime
 from pathlib import Path
 import re
 import sys
@@ -44,6 +45,30 @@ def read_yaml(path):
     return data
 
 
+def validate_authorization(state, workflow):
+    implementation = state["implementation"]
+    authorized = implementation["authorized"]
+    active_phase = implementation["active_phase"]
+    require(type(authorized) is bool and type(workflow["implementation_authorized"]) is bool, "Autorizacija mora biti boolean")
+    require(workflow["implementation_authorized"] == authorized and workflow["implementation_phase"] == active_phase, "Autorizacija faze nije usklađena između evidencija")
+    require(type(implementation["started"]) is bool, "Početak implementacije mora biti boolean")
+    require(not implementation["started"] or authorized, "Razvoj nije dozvoljen prije aktivacije")
+    conditions = {entry["id"]: entry for entry in state["entry_conditions"]}
+    require("PHASE-01-AUTHORIZATION" in conditions, "Nedostaje uslov autorizacije")
+    if authorized:
+        require(active_phase == "01", "Odobrena je isključivo Faza 01")
+        require(conditions["PHASE-01-AUTHORIZATION"]["status"] == "satisfied", "Aktivirana faza nema ispunjen uslov autorizacije")
+        timestamp = implementation.get("authorized_at")
+        require(isinstance(timestamp, str), "Nedostaje vrijeme autorizacije")
+        require(datetime.fromisoformat(timestamp.replace("Z", "+00:00")).tzinfo is not None, "Vrijeme autorizacije nema vremensku zonu")
+        request = implementation.get("authorization_request")
+        require(isinstance(request, str) and request.strip(), "Nedostaje zapis zahtjeva vlasnika")
+    else:
+        require(active_phase is None, "Neodobrena faza ne može biti aktivna")
+        require(conditions["PHASE-01-AUTHORIZATION"]["status"] == "pending", "Neodobrena faza ima ispunjen uslov autorizacije")
+    require(conditions["CAPACITY-CONFIRMATION"]["status"] == "pending" and conditions["BOOTSTRAP-GATE"]["status"] == "pending", "Aktivacija ne potvrđuje kapacitet ili bootstrap gate")
+
+
 def validate_state(state, workflow):
     stories = state["stories"]
     ids = [story["id"] for story in stories]
@@ -52,7 +77,8 @@ def validate_state(state, workflow):
     by_id = {story["id"]: story for story in stories}
     for story in stories:
         require(story["points"] in (1, 2, 3, 5, 8), "Procjena nije dozvoljena Fibonacci vrijednost")
-        require(story["status"] == "not_started", "Uslovni početni plan sadrži započetu priču")
+        expected_status = "in_progress" if state["implementation"]["started"] and story["id"] == "STORY-024" else "not_started"
+        require(story["status"] == expected_status, "Status priče nije usklađen sa početkom STORY-024")
         require(story["priority"] == "MUST" and story["epic"] == "EPIC-001", "Pogrešan opseg/prioritet")
         require(set(story["dependencies"]) <= set(ids), "Nepoznata zavisnost priče")
         require(story["parent_ids"] and all(1 <= int(parent.split("-")[1]) <= 23 for parent in story["parent_ids"]), "Nepoznat PRD roditelj")
@@ -93,7 +119,8 @@ def validate_state(state, workflow):
         "remaining_points": total,
     }.items():
         require(metrics[key] == expected, f"Netačan zbir: {key}")
-    require(all(metrics[key] == 0 for key in ("completed_stories", "in_progress_stories", "blocked_stories", "completed_points", "completion_percentage")), "Izmišljeni rezultat razvoja")
+    require(all(metrics[key] == 0 for key in ("completed_stories", "blocked_stories", "completed_points", "completion_percentage")), "Izmišljeni rezultat razvoja")
+    require(metrics["in_progress_stories"] == int(state["implementation"]["started"]), "Netačan broj priča u toku")
     require(sprint["proposed_points"] == proposed and sprint["committed_points"] == 0, "Netačan uslovni obim")
     require(sprint["status"] == "not_started" and sprint["planning_status"] == "conditional", "Pogrešan status sprinta")
     require(sprint["start_date"] is None and sprint["end_date"] is None and sprint["capacity_points"] is None, "Izmišljen rok/kapacitet")
@@ -102,13 +129,11 @@ def validate_state(state, workflow):
     require(scenario["base_points"] == scenario["development_flows"] * scenario["available_dev_days"] * scenario["points_per_dev_day"], "Netačan bazni scenario")
     require(scenario["adjusted_points"] == scenario["base_points"] * (1 - scenario["reserve_percentage"] / 100), "Netačna rezerva")
     require(proposed <= scenario["adjusted_points"], "Predloženi obim prelazi scenario kapaciteta")
-    implementation = state["implementation"]
-    require(implementation["active_phase"] is None and not implementation["authorized"] and not implementation["started"], "Neovlašćeno aktiviranje implementacije")
-    require(workflow["implementation_phase"] is None and not workflow["implementation_authorized"], "Workflow pogrešno aktivira razvoj")
+    validate_authorization(state, workflow)
     phase = workflow["phases"]["phase_4_implementation"]["workflows"]
     require(phase["sprint_planning"]["completed"] and phase["sprint_planning"]["planning_status"] == "conditional", "Plan nije evidentiran")
     require(set(phase["stories"]["story_list"]) == set(ids) and phase["stories"]["total"] == len(stories), "Workflow priče nisu usklađene")
-    require(phase["stories"]["completed"] == 0 and phase["stories"]["in_progress"] == 0, "Workflow izmišlja završetak")
+    require(phase["stories"]["completed"] == 0 and phase["stories"]["in_progress"] == metrics["in_progress_stories"], "Workflow nije usklađen sa napretkom priča")
     gate = workflow["phases"]["phase_3_solutioning"]["workflows"]["gate_check"]
     require(gate["decision"] == "CONDITIONAL PASS" and gate["passed"] is False, "Gate je neosnovano unaprijeđen")
     completed = sum(item.get("completed") is True for value in workflow["phases"].values() for item in value["workflows"].values())
@@ -136,7 +161,7 @@ def validate_documents(state, workflow):
         require(content.startswith(f"# {story['id']} — {story['title']}"), "Naslov priče nije usklađen")
         criteria = re.findall(r"^- \[ \] AC-(\d{2}):", content, re.MULTILINE)
         require(3 <= len(criteria) <= 7 and len(criteria) == len(set(criteria)), "Priča nema 3–7 jedinstvenih kriterijuma")
-        require(f"**Procjena:** {story['points']} bod" in content and "**Status:** not_started" in content, "Procjena/status dokumenta nije usklađen")
+        require(f"**Procjena:** {story['points']} bod" in content and f"**Status:** {story['status']}" in content, "Procjena/status dokumenta nije usklađen")
         for section in ("Korisnička priča", "Kriterijumi prihvatanja", "Implementacija i granice", "Zavisnosti i rubni slučajevi", "Provjere i završetak"):
             require(f"## {section}" in content, f"Nedostaje sekcija: {section}")
         for parent in story["parent_ids"]:
@@ -160,13 +185,28 @@ def validate_documents(state, workflow):
 
 
 def self_test(state, workflow):
+    # Both supported states must pass; authorization is independent of sprint start.
+    for authorized, started in ((False, False), (True, False), (True, True)):
+        control_state, control_workflow = deepcopy(state), deepcopy(workflow)
+        phase = "01" if authorized else None
+        control_state["implementation"].update(active_phase=phase, authorized=authorized, started=started)
+        control_state["implementation"].update(authorized_at="2026-10-12T05:42:08Z", authorization_request="Izričito aktiviranje Faze 01")
+        control_workflow.update(implementation_phase=phase, implementation_authorized=authorized)
+        control_state["stories"][0]["status"] = "in_progress" if started else "not_started"
+        control_state["metrics"]["in_progress_stories"] = int(started)
+        control_workflow["phases"]["phase_4_implementation"]["workflows"]["stories"]["in_progress"] = int(started)
+        next(entry for entry in control_state["entry_conditions"] if entry["id"] == "PHASE-01-AUTHORIZATION")["status"] = "satisfied" if authorized else "pending"
+        validate_state(control_state, control_workflow)
+    print("Pozitivne kontrole: 3/3; plan bez aktivacije, aktivacija i početak STORY-024.")
     mutations = [
         lambda item: item["metrics"].update(total_points=0),
         lambda item: item["stories"][0]["dependencies"].append("STORY-025"),
         lambda item: item["stories"][0]["dependencies"].append("STORY-999"),
-        lambda item: item["implementation"].update(authorized=True),
+        lambda item: item["implementation"].update(authorized=not item["implementation"]["authorized"]),
         lambda item: item["sprint"].update(start_date="2026-10-12"),
         lambda item: item["stories"].append(deepcopy(item["stories"][0])),
+        lambda item: item["implementation"].update(active_phase="02"),
+        lambda item: item["implementation"].update(started=not item["implementation"]["started"]),
     ]
     for mutate in mutations:
         changed = deepcopy(state)
@@ -182,7 +222,17 @@ def self_test(state, workflow):
         pass
     else:
         raise ValueError("Duplirani YAML ključ nije odbijen")
-    print("Negativne kontrole: 7/7 odbijeno; fajlovi nisu mijenjani.")
+    # Check evidence requirements even when validating a historical inactive plan.
+    for key in ("authorized_at", "authorization_request"):
+        changed = deepcopy(control_state)
+        changed["implementation"].pop(key)
+        try:
+            validate_state(changed, control_workflow)
+        except ValueError:
+            continue
+        raise ValueError("Aktivacija bez evidencije zahtjeva nije odbijena")
+    count = len(mutations) + 3
+    print(f"Negativne kontrole: {count}/{count} odbijeno; fajlovi nisu mijenjani.")
 
 
 def main():
@@ -192,7 +242,9 @@ def main():
     links = validate_documents(state, workflow)
     metrics = state["metrics"]
     print(f"Plan validan: {metrics['total_stories']} priča, {metrics['total_points']} boda; sprint 1: {metrics['proposed_sprint_stories']}/{metrics['proposed_sprint_points']}, preostalo: {metrics['backlog_stories']}/{metrics['backlog_points']}; 6 acceptance redova; {links} lokalnih veza.")
-    print("YAML, zavisnosti, jezik i neaktivirana implementacija su usklađeni. Aplikacioni testovi nisu izvršeni.")
+    status = "Faza 01 aktivirana" if state["implementation"]["authorized"] else "implementacija nije aktivirana"
+    progress = "STORY-024 je u toku" if state["implementation"]["started"] else "priče nisu započete"
+    print(f"YAML, zavisnosti i jezik su usklađeni; {status}, {progress}. Ovo nije aplikacioni acceptance dokaz.")
     if "--self-test" in sys.argv:
         self_test(state, workflow)
 

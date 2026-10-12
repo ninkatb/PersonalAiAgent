@@ -3,7 +3,7 @@
 - **Epik:** EPIC-001; roditelj STORY-002.
 - **Prioritet:** MUST.
 - **Procjena:** 5 bodova, uslovna; CLDR, regionalni tekst i jezički pregled zahtijevaju više scenarija.
-- **Status:** not_started; preostali obim Faze 01, bez dodijeljenog sprinta. Razvoj nije odobren.
+- **Status:** not_started; preostali obim Faze 01, bez dodijeljenog sprinta. Faza 01 je aktivirana 12.10.2026; rad na priči još nije počeo.
 - **Sljedivost:** FR-024 djelimično; NFR-007/008/011/012; TC-024/107/108/111/112; F01-AC-05/06; UX-I18N-01.
 
 ## Korisnička priča

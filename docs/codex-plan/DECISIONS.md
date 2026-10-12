@@ -33,6 +33,13 @@
 - `ui.theme = light | dark` je nezavisna trajna postavka. Kanonsko čuvanje i nesenzitivna bootstrap kopija za zaključani ekran razrađeni su u [ADR-005](../architecture/ADR-005_THEME_PERSISTENCE.md). Svijetla tema za novu instancu bez sačuvanog izbora ostaje UX prijedlog.
 - [UX specifikacija](../bmad/ux-design.md) razrađuje ekrane, tokove i planirane provjere. Zahtjev za UX i izbor teme ne aktiviraju implementacionu fazu.
 
+### Aktivacija Faze 01 — 12.10.2026.
+
+- Vlasnik je zahtjevom „Sljedeći korak: izričito aktiviranje Faze 01” izričito aktivirao Fazu 01 — Foundation.
+- Odobrenje je zapisano u `bmad/sprint-status.yaml` i `bmad/workflow-status.yaml`; ispunjen je uslov `PHASE-01-AUTHORIZATION`.
+- Aktivacija se odnosi na kriterijume Faze 01, uz privatni transport iz ADR-002 i dopunu teme iz ADR-005/I18N_SPEC. Ne aktivira naredne faze.
+- Vlasnik je zatim izabrao „Aktivacija i početak implementacije”. STORY-024 je u toku; ostale priče nisu započete. Kapacitet i kalendarski rok ostaju nepotvrđeni. Početne .NET/frontend provjere imaju zapis u README-u; `CONDITIONAL PASS`, bootstrap gate i otvoreni rizici ostaju zasebni uslovi.
+
 ## Projektantske pretpostavke koje omogućavaju odmah početi
 
 | Pitanje | Podrazumijevana odluka za plan | Posljedica |

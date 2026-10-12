@@ -44,3 +44,7 @@ bootstrap.json
 *.dmp
 Thumbs.db
 .DS_Store
+
+# Python setup helper output
+**/__pycache__/
+*.pyc

@@ -3,7 +3,7 @@
 - **Epik:** EPIC-001; roditelj STORY-001. Ovo nije STORY-023 za završno MVP izdanje.
 - **Prioritet:** MUST.
 - **Procjena:** 5 bodova, uslovna; CI i čisto Windows okruženje zahtijevaju provjeru native pakovanja.
-- **Status:** not_started; preostali obim Faze 01, bez dodijeljenog sprinta. Razvoj nije odobren.
+- **Status:** not_started; preostali obim Faze 01, bez dodijeljenog sprinta. Faza 01 je aktivirana 12.10.2026; rad na priči još nije počeo.
 - **Sljedivost:** FR-001/FR-024 i tema FR-025 djelimično; NFR-001/003/007/008/012; TC-001/024/025/101/103/107/108/112; F01-AC-01–06; G-002 konačni dokaz.
 
 ## Korisnička priča

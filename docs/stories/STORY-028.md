@@ -3,7 +3,7 @@
 - **Epik:** EPIC-001; roditelj STORY-002.
 - **Prioritet:** MUST.
 - **Procjena:** 5 bodova, uslovna; atomarni upis, kompatibilnost i odbijanje proizvoljnih putanja traže fault injection.
-- **Status:** not_started; preostali obim Faze 01, bez dodijeljenog sprinta. Razvoj nije odobren.
+- **Status:** not_started; preostali obim Faze 01, bez dodijeljenog sprinta. Faza 01 je aktivirana 12.10.2026; rad na priči još nije počeo.
 - **Sljedivost:** FR-024 djelimično; NFR-003/006/007/008/012; TC-024/103/106/107/108/112; F01-AC-05/06; UX-I18N-02; ADR-005 bootstrap dopuna.
 
 ## Korisnička priča

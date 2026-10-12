@@ -3,8 +3,8 @@
 - **Datum:** 11.10.2026. (`2026-10-11`)
 - **Verzija:** 1.1; dopuna pamćenja teme i UX predaje 12.10.2026.
 - **Izvori:** [PRD 1.1](prd.md), [početni plan](../codex-plan/00_START_HERE.md), [odluke](../codex-plan/DECISIONS.md), [I18N_SPEC 1.2](../codex-plan/I18N_SPEC.md), [AGENTS.md](../../AGENTS.md), [ADR-001](../architecture/ADR-001_LOCALIZATION.md), [ADR-005](../architecture/ADR-005_THEME_PERSISTENCE.md).
-- **Status:** Projektantska razrada cijelog MVP-a 01–09; aplikacija nije implementirana.
-- **Aktivna implementaciona faza:** Nije određena. Nijedan detaljni fajl neaktivne faze nije učitavan. Ova arhitektura ne aktivira fazu niti zamjenjuje njene pojedinačne kriterijume.
+- **Status:** Projektantska razrada cijelog MVP-a 01–09; početna struktura Faze 01 je dodana kroz STORY-024. Aplikacija u cjelini nije implementirana.
+- **Aktivna implementaciona faza:** Faza 01, izričito aktivirana zahtjevom vlasnika 12.10.2026. Njen detaljni fajl je pročitan pri aktivaciji; ostali detaljni fajlovi faza nisu učitavani. Ova arhitektura ne zamjenjuje pojedinačne kriterijume faze.
 - **Provjera spremnosti:** [gate-check.md](gate-check.md); odluka `CONDITIONAL PASS` odnosi se na planiranje, uz preduslove iz odjeljka 11.
 
 ## 1. Pregled sistema <!-- System Overview; architectural drivers; constraints -->

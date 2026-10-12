@@ -739,7 +739,7 @@ Nula podobnih zadataka, nula označenih važnih poruka ili nedovoljan uporediv u
 | Microsoft registracija i delegirana saglasnost | Vlasnik i razvoj | Nije provjeren tip naloga ni tenant politika | Testni nalog i minimalna prava u fazi 05 |
 | Vlasnikov provajder ili Ollama | Vlasnik | Credential/model nije provjeravan | Kontrolisan test veze u fazi 03; bez ključa izdavača |
 | Kontrolisani sintetički podaci | Razvoj/testiranje | Aplikacioni fixture-i ne postoje | Bez stvarnog privatnog sadržaja u testovima |
-| Izričito aktiviranje implementacionih faza | Vlasnik | Nijedna aktivna faza | BMAD status nije odobrenje za razvoj |
+| Izričito aktiviranje implementacionih faza | Vlasnik | Faza 01 aktivirana zahtjevom vlasnika 12.10.2026. | BMAD evidencija bilježi zahtjev; ostale faze čekaju zasebno aktiviranje |
 
 Priprema PRD-a nije blokirana. Ovi implementacioni preduslovi još nisu dokazi raspoloživosti.
 

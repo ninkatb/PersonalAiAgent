@@ -3,7 +3,7 @@
 - **Epik:** EPIC-001; roditelj STORY-001.
 - **Prioritet:** MUST.
 - **Procjena:** 5 bodova, uslovna; privatni handshake i tri transportne granice zahtijevaju negativne scenarije.
-- **Status:** not_started; kandidat sprinta 1. Razvoj nije odobren.
+- **Status:** not_started; kandidat sprinta 1. Faza 01 je aktivirana 12.10.2026; rad na priči još nije počeo.
 - **Sljedivost:** FR-001 djelimično; NFR-001/003/007/012; TC-001/101/103/107/112; F01-AC-02/03/05; G-002.
 
 ## Korisnička priča

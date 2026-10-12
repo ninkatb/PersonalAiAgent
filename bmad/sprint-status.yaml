@@ -1,5 +1,5 @@
 # BMAD status sprinta
-# Uslovni plan bez kalendarskog roka; razvoj nije započet ni odobren.
+# Faza 01 je aktivirana; STORY-024 je u toku, a sprint ostaje uslovan.
 
 project:
   name: "Personal AI Agent"
@@ -19,11 +19,13 @@ sprint:
   output_file: "docs/bmad/sprint-plan.md"
 
 implementation:
-  active_phase: null
+  active_phase: "01"
   candidate_phase: "01"
-  authorized: false
-  started: false
-  note: "Vlasnik je izabrao uslovni plan bez kalendarskog roka; za razvoj treba izričito aktivirati Fazu 01."
+  authorized: true
+  authorized_at: "2026-10-12T05:42:08Z"
+  authorization_request: "Sljedeći korak: izričito aktiviranje Faze 01"
+  started: true
+  note: "Vlasnik je odobrio aktivaciju i početak implementacije. STORY-024 je u toku; kapacitet sprinta i acceptance dokazi nisu potvrđeni aktivacijom."
 
 capacity:
   confirmed: false
@@ -58,7 +60,8 @@ stories:
     parent_ids: [STORY-001, STORY-002]
     points: 5
     priority: MUST
-    status: not_started
+    status: in_progress
+    started_at: "2026-10-12T05:51:13Z"
     sprint_planned: 1
     dependencies: []
     output_file: "docs/stories/STORY-024.md"
@@ -127,7 +130,7 @@ backlog_story_ids: [STORY-027, STORY-028, STORY-029, STORY-030]
 
 entry_conditions:
   - id: PHASE-01-AUTHORIZATION
-    status: pending
+    status: satisfied
     scope: "Sve implementacione priče"
     description: "Izričit zahtjev vlasnika za implementaciju Faze 01."
   - id: CAPACITY-CONFIRMATION
@@ -155,7 +158,7 @@ metrics:
   proposed_sprint_stories: 3
   backlog_stories: 4
   completed_stories: 0
-  in_progress_stories: 0
+  in_progress_stories: 1
   blocked_stories: 0
   total_points: 33
   proposed_sprint_points: 15
@@ -164,4 +167,4 @@ metrics:
   remaining_points: 33
   completion_percentage: 0
 
-last_updated: "2026-10-12T05:21:03Z"
+last_updated: "2026-10-12T06:04:32Z"

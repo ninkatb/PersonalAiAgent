@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <ItemGroup>
+    <ProjectReference Include="../PersonalAI.Application/PersonalAI.Application.csproj" />
+    <ProjectReference Include="../PersonalAI.Infrastructure/PersonalAI.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
