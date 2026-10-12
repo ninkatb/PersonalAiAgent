@@ -1,15 +1,15 @@
 # Uslovni plan sprinta 1 — Personal AI Agent
 
 - **Datum planiranja:** 12.10.2026.
-- **Status:** Planiranje završeno; sprint i razvoj nisu počeli.
+- **Status:** Planiranje završeno; STORY-024 je u toku od aktivacije i zahtjeva za početak implementacije 12.10.2026. Sprint ostaje uslovan.
 - **Odluka vlasnika:** Uslovni plan bez kalendarskog roka. Kapacitet, sastav tima i dostupni radni dani nisu potvrđeni.
 - **Početak / kraj:** Nisu određeni.
-- **Implementaciona faza:** Nijedna nije aktivirana. Kandidat za rad je prva cjelina Faze 01; ovaj plan nije odobrenje za razvoj.
+- **Implementaciona faza:** Faza 01 je izričito aktivirana zahtjevom vlasnika 12.10.2026. Aktivacija je evidentirana odvojeno od početka sprinta, kapaciteta i statusa priča.
 - **Cilj sprinta:** Pokrenuti praznu desktop aplikaciju u tri lokalizacije, provjeriti zaštićeni lokalni health poziv kroz Rust most i bezbjedno upravljati sidecar procesom.
 
 ## 1. Izvori i granice
 
-Mjerodavni su [početni plan](../codex-plan/00_START_HERE.md), [odluke](../codex-plan/DECISIONS.md), [I18N_SPEC](../codex-plan/I18N_SPEC.md) i [AGENTS.md](../../AGENTS.md). Ulazi su [PRD](prd.md), [arhitektura](architecture.md), [provjera spremnosti](gate-check.md) i [UX](ux-design.md). Detaljni fajl [Faze 01](../codex-plan/01_FOUNDATION.md) pregledan je za uslovno razlaganje prvog kandidata; ostali detaljni fajlovi faza nisu učitavani u ovom toku. Prije razvoja treba izričito aktivirati Fazu 01 i ponovo potvrditi njenu usklađenost sa odlukama.
+Mjerodavni su [početni plan](../codex-plan/00_START_HERE.md), [odluke](../codex-plan/DECISIONS.md), [I18N_SPEC](../codex-plan/I18N_SPEC.md) i [AGENTS.md](../../AGENTS.md). Ulazi su [PRD](prd.md), [arhitektura](architecture.md), [provjera spremnosti](gate-check.md) i [UX](ux-design.md). Detaljni fajl [Faze 01](../codex-plan/01_FOUNDATION.md) ponovo je pročitan pri aktivaciji; ostali detaljni fajlovi faza nisu učitavani u ovom toku. ADR-002 precizira privatni transport, a ADR-005 i I18N_SPEC dopunjuju bootstrap dozvoljenim poljem teme. Aktivacija ne zatvara njihove preostale provjere.
 
 Plan obuhvata EPIC-001 i samo početni dio zahtjeva FR-001/FR-024, uz potvrđenu dopunu FR-025 za temu iz ADR-005. Pun onboarding sa master lozinkom, recovery kodom, AI jezikom i modelom pripada kasnijim odobrenim fazama. Završetak sprinta 1 ne znači završetak Faze 01 ili cijelog FR-001/FR-024/FR-025.
 
@@ -47,7 +47,7 @@ Zatim STORY-025 dodaje token, tačan Origin/Host i poznatu Rust IPC operaciju. S
 
 Prije implementacije:
 
-1. Vlasnik izričito aktivira Fazu 01; BMAD evidencija nije autorizacija.
+1. **Ispunjeno 12.10.2026:** vlasnik je zahtjevom „Sljedeći korak: izričito aktiviranje Faze 01” aktivirao Fazu 01. BMAD evidencija bilježi taj zahtjev, a ne stvara odobrenje samostalno.
 2. Potvrđuju se raspoloživi kapacitet i konačan obim, bez obaveze kalendarskog roka.
 3. Usklađuju se bootstrap dopuna ADR-005 i transport ADR-002 sa detaljnim planom; dopunjena bootstrap šema prolazi novu gate provjeru prije implementacije STORY-028/029.
 4. U STORY-024 provjeravaju se aktuelna podrška, licence i konkretne zaključane verzije alata/paketa. Ovaj plan ne bira nove verzije ili licence.
@@ -99,7 +99,7 @@ Tokom rada u [sprint-status.yaml](../../bmad/sprint-status.yaml) upisivati stvar
 
 ## 9. Provjera plana i predaja
 
-Dokumentaciona provjera: `python docs/bmad/validate-sprint-plan.py`. Provjerava YAML, sedam jedinstvenih priča, procjene i zbir, zavisnosti bez ciklusa, razdvajanje sprinta i preostalog obima, šest acceptance redova, lokalne veze i očuvanje neaktivirane implementacije. Validator provjerava ovaj uslovni početni plan; nakon izričitog aktiviranja i promjene stanja mora se uskladiti sa novom evidencijom. Postojeća UX provjera: `node docs/bmad/validate-ux.cjs`.
+Dokumentaciona provjera: `python docs/bmad/validate-sprint-plan.py --self-test`. Provjerava YAML, sedam jedinstvenih priča, procjene i zbir, zavisnosti bez ciklusa, razdvajanje sprinta i preostalog obima, šest acceptance redova, lokalne veze i usklađenu evidenciju autorizacije. Podržava početni plan bez aktivacije i izričito aktiviranu Fazu 01 sa zapisom zahtjeva i vremena. Početak priča, kapacitet i bootstrap gate ostaju zasebni uslovi; validator se mora dopuniti kada stvarni razvoj promijeni njihove statuse. Postojeća UX provjera: `node docs/bmad/validate-ux.cjs`.
 
 Python zavisnost za dokumentacioni validator je zaključana u [requirements-validation.txt](requirements-validation.txt). [PyYAML 6.0.3 na PyPI](https://pypi.org/project/PyYAML/6.0.3/) navodi MIT licencu, Python ≥3.8 i Windows wheel za Python 3.13; podrška/licenca provjerene su 12.10.2026. Paket nije aplikaciona zavisnost. U ovoj provjeri instaliran je samo u privremeni direktorijum, bez promjene globalnog Python okruženja.
 
@@ -126,4 +126,4 @@ Provjere potvrđuju dokumente i početnu evidenciju; nema aplikacionog acceptanc
 
 Planirane aplikacione komande nakon stvaranja koda su `dotnet build`, `dotnet test`, `npm run build`, `npm run typecheck` i `npm run lint`, uz Rust/desktop build i Windows smoke. Ove komande sada nisu aplikacioni dokaz jer projekti ne postoje.
 
-Precizan sljedeći razvojni korak: nakon izričitog zahtjeva vlasnika za Fazu 01, potvrditi kapacitet i spremnost prve priče, pa započeti STORY-024. Zahtjev `bmad:sprint-plan` ovdje je potpuno obrađen; odobrenje razvoja je zasebna projektna granica iz AGENTS.md.
+Precizan sljedeći razvojni korak: završiti desktop provjere STORY-024, pa implementirati STORY-025. Odobrenje Faze 01 i početka implementacije je već dato; ne tražiti ga ponovo. Kapacitet/obim obavezanog sprinta ostaje nepotvrđen. Aktivacija ne potvrđuje Windows toolchain ili završetak faze; dokazi početne implementacije navedeni su u README-u.

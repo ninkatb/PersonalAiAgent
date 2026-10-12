@@ -3,7 +3,7 @@
 - **Epik:** EPIC-001; roditelji STORY-001 i STORY-002 iz PRD-a.
 - **Prioritet:** MUST.
 - **Procjena:** 5 bodova, uslovna; početni toolchain i više slojeva povećavaju neizvjesnost.
-- **Status:** not_started; kandidat sprinta 1. Razvoj nije odobren.
+- **Status:** in_progress; kandidat sprinta 1. Faza 01 je aktivirana 12.10.2026; vlasnik je odobrio početak implementacije.
 - **Sljedivost:** FR-001/FR-024 djelimično; NFR-003/007/012; TC-001/024/103/107/112; F01-AC-01/04/05/06.
 
 ## Korisnička priča
@@ -36,3 +36,9 @@ Nema prethodnih priča. Preduslovi su aktiviranje Faze 01 i provjeren Windows to
 - Build: dotnet build/test, npm build/typecheck/lint i Tauri razvojni build; tačne putanje i komande dopisati nakon scaffold-a.
 
 Završetak zahtijeva sve AC dokaze, pregled koda, README i stvarni zapis komandi. Nema aplikacionog testa izvršenog pri pisanju priče. Puna pravila završetka su u [planu sprinta](../bmad/sprint-plan.md).
+
+## Početak implementacije — 12.10.2026.
+
+Dodani su solution i slojevi, traženi interfejsi, test projekti, React/Vite UI sa tri kataloga i Tauri shell sa ograničenim capabilities/CSP. U Linux cloud okruženju prošli su .NET build i 4 testa, frontend build/typecheck/lint, paritet 3 kataloga i 10 UI testova. Native `cargo check` staje na nedostajućoj GLib sistemskoj biblioteci; Windows shell još nije pokrenut. CI je konfigurisan, nije izvršen.
+
+AC-02/03 imaju početni implementacioni dokaz; AC-01/04/05/06 imaju lokalne provjere, uz preostalu desktop provjeru. Nijedna checkbox stavka nije označena završenom bez cijelog traženog dokaza. Komande, licence i ograničenja su u izvještaju `docs/architecture/FOUNDATION_STATUS.md`. Priča ostaje `in_progress`.

@@ -1,0 +1,41 @@
+name: Foundation
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  validate:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 24.19.0
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: 10.0.401
+      - run: dotnet restore PersonalAI.sln --locked-mode
+      - run: dotnet build PersonalAI.sln --no-restore
+      - run: dotnet test PersonalAI.sln --no-build --no-restore
+      - run: npm ci
+        working-directory: apps/web
+      - run: npm run build
+        working-directory: apps/web
+      - run: npm run lint
+        working-directory: apps/web
+      - run: npm run test:catalogs
+        working-directory: apps/web
+      - run: npm test
+        working-directory: apps/web
+      - name: Windows desktop shell (no installer or sidecar yet)
+        if: runner.os == 'Windows'
+        run: |
+          rustup toolchain install 1.99.0 --profile minimal --component rustfmt
+          npm ci --prefix apps/desktop
+          npm --prefix apps/desktop run build -- --no-bundle

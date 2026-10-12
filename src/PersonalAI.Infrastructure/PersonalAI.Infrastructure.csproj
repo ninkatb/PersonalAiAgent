@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="../PersonalAI.Domain/PersonalAI.Domain.csproj" />
+    <ProjectReference Include="../PersonalAI.Application/PersonalAI.Application.csproj" />
+  </ItemGroup>
+</Project>

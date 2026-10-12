@@ -3,7 +3,7 @@
 - **Epik:** EPIC-001; roditelj STORY-022, samo početni dio FR-025 za temu.
 - **Prioritet:** MUST.
 - **Procjena:** 3 boda, uslovna; koristi gotove tokene i zajednički bootstrap servis.
-- **Status:** not_started; preostali obim Faze 01, bez dodijeljenog sprinta. Razvoj nije odobren.
+- **Status:** not_started; preostali obim Faze 01, bez dodijeljenog sprinta. Faza 01 je aktivirana 12.10.2026; rad na priči još nije počeo.
 - **Sljedivost:** FR-025 djelimično, potvrđena dopuna 12.10.2026; NFR-007/008/011; TC-025/107/108/111; UX-THEME-01/02/05/06 u početnom dijelu; ADR-005.
 
 ## Korisnička priča
