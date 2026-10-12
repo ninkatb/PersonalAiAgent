@@ -40,7 +40,17 @@
 - Aktivacija se odnosi na kriterijume Faze 01, uz privatni transport iz ADR-002 i dopunu teme iz ADR-005/I18N_SPEC. Ne aktivira naredne faze.
 - Vlasnik je zatim izabrao „Aktivacija i početak implementacije”. STORY-024 je u toku; ostale priče nisu započete. Kapacitet i kalendarski rok ostaju nepotvrđeni. Početne .NET/frontend provjere imaju zapis u README-u; `CONDITIONAL PASS`, bootstrap gate i otvoreni rizici ostaju zasebni uslovi.
 
+### STORY-025 — implementacija zaštićenog transporta, 12.10.2026.
+
+Na vlasnikov zahtjev `bmad:dev-story STORY-025` implementirani su privatni stdin/stdout handshake, session token, loopback bind, strogi Origin/Host i ograničena Rust health komanda. Vlasnik je 12.10.2026. potvrdio da je AC-06 manuelno testirao i da je rezultat uredan. [Windows izvještaj](../architecture/STORY-025_WINDOWS_VERIFICATION.md) sadrži lokalne testove i tu manuelnu potvrdu, uz jasno naveden izvor i granice dostavljenih detalja. AC-06 i STORY-025 su završeni; G-002 ostaje otvoren za preostale STORY-026/030 dokaze, a STORY-026 i Faza 02 nisu započete. Nema nove odluke o vaultu, bootstrap-u, kapacitetu ili arhitektonskoj alternativi.
+
+### STORY-026 — životni ciklus, 12.10.2026.
+
+Na zahtjev vlasnika `bmad:dev-story STORY-026` implementirani su atomarni Windows Job Object start/cleanup, kernel lease profila, opoziv transporta i HTTP cancellation. Produkcioni profil ostaje fiksan u aplikacionom direktorijumu, bez renderer putanje; bootstrap se ne čita niti mijenja. Sleep/resume opoziva sesiju, ostavlja `Locked` i zahtijeva restart sa novim handshakom. [Windows izvještaj](../architecture/STORY-026_WINDOWS_VERIFICATION.md) razdvaja procesne/native automatizovane dokaze i sintetičke power poruke od neizvršenog fizičkog sleep/resume-a i vizuelne provjere. Priča ostaje `in_progress`; G-002, Faza 01 i svi raniji gate uslovi ostaju otvoreni. Nema nove aktivacije faze, vaulta ili produkcionog stream-a.
+
 ## Projektantske pretpostavke koje omogućavaju odmah početi
+
+Završetak STORY-024 od 12.10.2026. evidentiran je u BMAD statusima uz [Windows dokaze](../architecture/STORY-024_WINDOWS_VERIFICATION.md): native debug shell, navigacija tastaturom, tri lokalizacije, ugovori i provjere build/test/lint. Windows C++ komponente instalirane su na vlasnikov izričit zahtjev „instaliraj sam”; Node/Rust pripremljeni su izolovano. Ovo završava samo STORY-024, bez promjene arhitekture, potvrde kapaciteta sprinta, završetka Faze 01 ili aktivacije Faze 02. Sljedeća priča je STORY-025.
 
 | Pitanje | Podrazumijevana odluka za plan | Posljedica |
 |---|---|---|

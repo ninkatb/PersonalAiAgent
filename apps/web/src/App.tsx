@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formattingLocale, locales } from './i18n';
+import { BackendHealth } from './BackendHealth';
 
 const pages = ['overview', 'chat', 'mail', 'calendar', 'documents', 'tasks', 'memory', 'settings'] as const;
 type Page = typeof pages[number];
@@ -33,6 +34,7 @@ export function App() {
     <main id="content" tabIndex={-1}>
       <header><p>{t('nav.' + page)}</p><span className="locked" role="status"><span aria-hidden="true">●</span>{t('vault.locked')}</span></header>
       <section className="page-heading"><p className="eyebrow">{t('app.subtitle')}</p><h1>{page === 'overview' ? t('app.welcome') : t('nav.' + page)}</h1><p>{page === 'overview' ? t('app.intro') : t('common.empty')}</p></section>
+      {page === 'overview' && <BackendHealth />}
       {page === 'settings' ? <section className="card settings-card"><h2>{t('settings.uiLanguage')}</h2><p>{t('settings.latinScript')}</p><p>{t('app.languageTemporary')}</p></section> : <>
         <section className="card empty-card"><div className="empty-mark" aria-hidden="true">{marks[page]}</div><h2>{t('app.emptyTitle')}</h2><p>{t('app.emptyDescription')}</p><span>{t('app.items', { count: 0 })}</span></section>
         <div className="details"><section className="card"><h2>{t('app.today')}</h2><time dateTime={new Date().toISOString()}>{new Intl.DateTimeFormat(culture, { dateStyle: 'long' }).format(new Date())}</time></section><section className="card"><h2>{t('vault.locked')}</h2><p>{t('app.lockNotice')}</p></section></div>

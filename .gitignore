@@ -29,6 +29,7 @@ bootstrap.json
 **/node_modules/
 **/dist/
 **/target/
+**/src-tauri/gen/
 **/coverage/
 **/TestResults/
 **/playwright-report/

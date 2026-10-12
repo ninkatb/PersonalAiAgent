@@ -1,5 +1,10 @@
 :root { font-family: "Segoe UI", system-ui, sans-serif; color: #243039; background: #f6f7f5; font-synthesis: none; }
 * { box-sizing: border-box; }
+.backend-health { margin-bottom: 20px; }
+.backend-health button { background: #176b55; color: #fff; border: 0; padding: 10px 16px; border-radius: 6px; cursor: pointer; }
+.backend-health button:disabled { opacity: .7; cursor: wait; }
+.sidebar { position: sticky; top: 0; height: 100vh; overflow: auto; }
+@media (max-width: 620px) { .sidebar { position: static; height: auto; } }
 body { margin: 0; }
 button, select { font: inherit; }
 button, select, a { outline-offset: 4px; }

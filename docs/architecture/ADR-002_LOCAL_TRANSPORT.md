@@ -2,7 +2,7 @@
 
 **Datum:** 11.10.2026.
 
-**Status:** Projektantska odluka; dokaz na Windows-u slijedi u izričito aktiviranoj fazi 01.
+**Status:** Odluka primijenjena za health u završenoj STORY-025; [Windows dokazi](STORY-025_WINDOWS_VERIFICATION.md) pokrivaju privatni kanal, token, Origin/Host i cleanup, uz evidentiranu vlasnikovu manuelnu potvrdu mrežne provjere AC-06. Puni lifecycle i stream dokaz ostaju otvoreni u Fazi 01.
 
 ## Kontekst
 
@@ -24,6 +24,8 @@ Odluka ne tvrdi da je renderer izolovan od svakog napada ili da token štiti kom
 
 ## Provjera i ponovna procjena
 
-Faza 01 treba da dokaže bind, startup handshake, cleanup, sleep, ograničeni IPC i stream. TC-101/103/112 pokrivaju stale/missing token, Origin/Host, preflight, dva procesa/instance i zabranjene reference. Testovi još nisu izvršeni.
+STORY-025 uvodi ograničene JSON okvire kroz naslijeđeni stdin/stdout, CSPRNG token, session Origin `http://session-{sessionId}.localhost`, bind na `127.0.0.1:0` i capability samo za `backend_health`. Izvršeni lokalni Windows testovi potvrđuju te granice i normalni cleanup, uz nezavisan startup timeout za Windows pipe. Detalji, komande i izvor vlasnikove manuelne potvrde AC-06 nalaze se u izvještaju. Faza 01 i dalje treba sleep, restart/stale token, instance lock i stream dokaze kroz STORY-026/030; TC-101/103/112 nisu u cjelini zatvoreni.
+
+STORY-026 dopunjuje transport atomarnim Windows Job Object vlasništvom pri `CreateProcessW`, eksplicitnom handle allowlist-om, kernel lease-om profila naslijeđenim u sidecar i terminalnim opozivom na EOF/crash/suspend/resume. Desktop zadržava profil i pri neuspješnom handshaku; ne koristi PID/brisanje lock-a za preuzimanje. Resume zahtijeva restart i novi provjeren handshake, bez automatskog unlock-a. Renderer može samo slušati nesenzitivni događaj nedostupnosti uz postojeći health. Backend povezuje cancellation sesije sa aktivnim HTTP zahtjevima. Sintetički stream postoji samo u testnom hostu; produkcioni endpoint nije dodat. [Windows izvještaj STORY-026](STORY-026_WINDOWS_VERIFICATION.md) mapira izvršene dokaze i otvoreni stvarni sleep/resume/vizuelni pregled, pa G-002 nije zatvoren.
 
 Detaljni ugovori i obrazloženje su u [arhitekturi §2–3 i §5](../bmad/architecture.md). Udaljeni pristup zahtijeva novu odluku u posebnoj fazi.

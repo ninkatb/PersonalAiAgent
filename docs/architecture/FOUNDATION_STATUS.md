@@ -1,20 +1,25 @@
-# Faza 01 — početak implementacije
+# Faza 01 — stanje implementacije
 
 **Datum:** 12.10.2026.
 
-**Status:** STORY-024 je u toku. Faza 01 nije završena.
+**Status:** STORY-024 i STORY-025 su završene. STORY-026 je `in_progress` uz implementiran lifecycle i automatizovane Windows dokaze; stvarni sleep/resume i vizuelni native pregled ostaju otvoreni. Faza 01 nije završena.
 
-Vlasnik je izričito aktivirao Fazu 01 i potvrdio početak implementacije. Uslovni sprint ostaje bez potvrđenog kapaciteta ili roka. Evidencije bilježe jednu priču u toku i nula završenih bodova.
+Vlasnik je izričito aktivirao Fazu 01 i potvrdio početak implementacije. Uslovni sprint ostaje bez potvrđenog kapaciteta ili roka. Evidencije bilježe 2/7 završenih priča, 10/33 boda; STORY-025 je završena na osnovu lokalnih transportnih dokaza i vlasnikove potvrde uspješne manuelne provjere AC-06.
+
+[Windows provjera STORY-024](STORY-024_WINDOWS_VERIFICATION.md) bilježi nastavak u Windows 11 x64 okruženju: .NET/frontend provjere, ispravke putanje/ESLint-a, strožu Tauri navigaciju, coverage i razvojni toolchain. Tabela Linux rezultata ispod ostaje istorijski zapis početka rada.
 
 ## Implementirane komponente
 
 - `PersonalAI.sln`: .NET 10 Domain, Application, Infrastructure i Api, uz unit, integration i security projekte. `Directory.Packages.props` centralizuje NuGet verzije; svaki projekat ima zaključane zavisnosti. `global.json` zahtijeva SDK 10.0.401.
 - Domain sadrži deset traženih portova i odvojeni `IRequestAuthenticator`, bez konkretnih AI, SQLite ili desktop adaptera. Application registruje samo zaključano početno stanje. Infrastructure je pripremljen za buduće adaptere.
-- API executable izlazi kodom 78 i `API_TRANSPORT_NOT_CONFIGURED`. Dok STORY-025 ne implementira privatni kanal i autorizaciju, nijedan HTTP listener ili health ruta se ne otvaraju.
+- API iz STORY-025 otvara samo 127.0.0.1:0 poslije privatnog handshaka. Health i sve stvarne rute traže token i tačan session Origin/Host; neispravan ili tihi kanal izlazi kodom 78 bez listenera. [Windows dokazi](STORY-025_WINDOWS_VERIFICATION.md) pokrivaju HTTP/DTO/redakciju i startup procese.
 - `apps/web`: React/Vite, TypeScript strict, početna stranica i sedam praznih modula, navigacija tastaturom i selektor sa tri stvarna zasebna kataloga. Promjena jezika čuva trenutnu navigaciju. UI ostaje zaključan; nema produkcionog unlock-a.
 - Jezik se trenutno mijenja samo za tekuće pokretanje. Trajni bootstrap, legacy migracija i tema pripadaju STORY-028/029; UI ne tvrdi da je izbor sačuvan.
-- `apps/desktop`: Tauri 2 shell sa praznim permissions skupom, bez shell/fs plugin-a ili generičkih IPC komandi, i CSP bez `unsafe-eval`. Shell još ne pokreće sidecar niti pravi installer; to dolazi kroz STORY-025/026/030.
+- `apps/desktop`: Tauri 2 shell sa capability samo za backend_health, bez shell/fs plugin-a ili generičkih IPC komandi, i CSP bez `unsafe-eval`. Shell pokreće fiksni sidecar preko privatnih stdin/stdout cijevi i normalno ga uklanja pri zatvaranju. Installer ostaje STORY-030; puni lifecycle STORY-026.
+- Windows native debug build i pokretanje su provjereni: svih osam stranica Tab/Enter tastaturom, selektor tri jezika i lokalizovan naslov. Poseban Rust navigation guard odbija vanjske/file URL-ove; 2 testa i clippy prolaze. .NET rezultati STORY-024 su 5 testova, frontend 10 i 90,9% line coverage; STORY-025 ima zaseban noviji izvještaj. [Windows izvještaj](STORY-024_WINDOWS_VERIFICATION.md) mapira svih šest AC priče.
 - GitHub Actions provjere su konfiguracije za Linux/Windows .NET/frontend i Windows desktop shell. CI nije izvršen u ovom zadatku.
+
+STORY-026 dodaje Windows Job Object, per-profile kernel lease, terminalni opoziv transporta, native power handler i cancellation HTTP odgovora. Renderer dobija samo read-only događaj nedostupnosti uz health. [Novi Windows izvještaj](STORY-026_WINDOWS_VERIFICATION.md) sadrži komande, pojedinačne kriterijume i granice dokaza. F01-AC-03/05 dobijaju lifecycle/test dokaze; konačni installer i trajne UI postavke ostaju otvoreni u istoj fazi. Nema promjene broja završenih priča ili bootstrap implementacije.
 
 ## Zavisnosti i provjera izvora
 
@@ -61,11 +66,11 @@ Chromium smoke je dodatna provjera; za njega je potrebno dozvoliti `cdn.playwrig
 | Kriterijum | Trenutni dokaz / preostali rad |
 |---|---|
 | F01-AC-01 | README i razvojne komande dodani; Windows instalacija i sidecar bundle čekaju STORY-030 |
-| F01-AC-02 | Planirani Rust → sidecar transport još nije implementiran; STORY-025 |
-| F01-AC-03 | Trenutno nema HTTP listenera; token/Origin/Host/loopback dokazi čekaju STORY-025/026 |
+| F01-AC-02 | Stvarni Windows UI → Rust → API health prolazi; STORY-025 izvještaj |
+| F01-AC-03 | Token/Origin/Host/preflight/loopback lokalni testovi prolaze; vlasnik je potvrdio manuelnu provjeru AC-06 STORY-025. STORY-026 lifecycle ostaje otvoren |
 | F01-AC-04 | Portovi, slojevi i DI testovi prolaze; nema konkretnih provajdera u core-u |
-| F01-AC-05 | .NET/frontend provjere pokrenute; native build blokiran sistemskim bibliotekama, Windows/CI provjere još nisu izvršene |
+| F01-AC-05 | .NET/frontend/native debug build, testovi, fmt/clippy i Windows shell smoke prošli; installer, puni phase scenariji i CI izvršavanje čekaju naredne priče |
 | F01-AC-06 | Stvarni katalozi, selektor, OS prijedlog i regionalna mapa rade; trajni default i legacy migracija čekaju STORY-027/028 |
 | Dopuna teme | STORY-029; bootstrap gate ostaje pending |
 
-Sljedeće: obezbijediti desktop razvojne preduslove iz [Tauri uputstva](https://v2.tauri.app/start/prerequisites/) i provjeriti shell na Windows 11 x64. STORY-024 se završava tek sa svojim AC dokazima; zatim STORY-025 implementira zaštićeni lokalni health. G-001 za budući vault, G-002 i bootstrap gate ostaju otvoreni. Naredna faza nije aktivirana.
+Windows razvojni preduslovi iz [Tauri uputstva](https://v2.tauri.app/start/prerequisites/) sada su pripremljeni i shell je provjeren. STORY-024 i STORY-025 su završene sa zasebnim AC dokazima. STORY-026 je implementirana uz automatizovane dokaze; sljedeći korak je stvarni sleep/resume i vizuelna native provjera u istoj priči. G-001, preostali G-002 i bootstrap gate ostaju otvoreni. Faza 02 nije aktivirana.

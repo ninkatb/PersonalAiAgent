@@ -14,8 +14,11 @@ describe('foundation shell', () => {
       expect(screen.getByRole('status').textContent).toContain(i18n.t('vault.locked'));
       expect(within(screen.getByRole('navigation')).getAllByRole('button')).toHaveLength(8);
       const user = userEvent.setup();
+      await user.tab();
+      expect(document.activeElement).toBe(screen.getByRole('link'));
       for (const button of within(screen.getByRole('navigation')).getAllByRole('button')) {
-        button.focus();
+        await user.tab();
+        expect(document.activeElement).toBe(button);
         await user.keyboard('{Enter}');
         expect(button.getAttribute('aria-current')).toBe('page');
         const heading = screen.getByRole('heading', { level: 1 }).textContent;

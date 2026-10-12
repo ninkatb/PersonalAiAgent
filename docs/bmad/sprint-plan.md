@@ -1,7 +1,7 @@
 # Uslovni plan sprinta 1 — Personal AI Agent
 
 - **Datum planiranja:** 12.10.2026.
-- **Status:** Planiranje završeno; STORY-024 je u toku od aktivacije i zahtjeva za početak implementacije 12.10.2026. Sprint ostaje uslovan.
+- **Status:** Planiranje završeno; STORY-024 i STORY-025 su završene 12.10.2026. STORY-026 je `in_progress` uz automatizovane Windows dokaze; stvarni sleep/resume i vizuelni native pregled ostaju otvoreni. Sprint ostaje uslovan, Faza 01 nezavršena.
 - **Odluka vlasnika:** Uslovni plan bez kalendarskog roka. Kapacitet, sastav tima i dostupni radni dani nisu potvrđeni.
 - **Početak / kraj:** Nisu određeni.
 - **Implementaciona faza:** Faza 01 je izričito aktivirana zahtjevom vlasnika 12.10.2026. Aktivacija je evidentirana odvojeno od početka sprinta, kapaciteta i statusa priča.
@@ -124,6 +124,6 @@ git diff --check
 
 Provjere potvrđuju dokumente i početnu evidenciju; nema aplikacionog acceptance dokaza. Izmijenjeni su README, BMAD arhitektura radi naziva/strukture, obje YAML evidencije; dodati su plan, sedam priča i dokumentacioni validator sa zaključanom zavisnošću. Postojeće korisničke izmjene mjerodavnih specifikacija nisu prepisivane. Nije dodata migracija baze ili implementacija aplikacije.
 
-Planirane aplikacione komande nakon stvaranja koda su `dotnet build`, `dotnet test`, `npm run build`, `npm run typecheck` i `npm run lint`, uz Rust/desktop build i Windows smoke. Ove komande sada nisu aplikacioni dokaz jer projekti ne postoje.
+Početni odjeljci/tabela provjera iznad predstavljaju istorijski zapis planiranja. Aplikacioni projekti sada postoje; STORY-024 ima izvršeni Windows build i desktop smoke, 5 .NET / 10 UI / 2 Rust testa, lint/typecheck/clippy i coverage. [Windows izvještaj](../architecture/STORY-024_WINDOWS_VERIFICATION.md) sadrži komande, AC-01–06 mapiranje i pregled koda. STORY-025 je završena uz lokalne transportne dokaze i vlasnikovu manuelnu potvrdu AC-06. Završeno je 10/33 boda; preostalih 23 boda nisu završeni, bez promjene kapaciteta ili istorije sprinta.
 
-Precizan sljedeći razvojni korak: završiti desktop provjere STORY-024, pa implementirati STORY-025. Odobrenje Faze 01 i početka implementacije je već dato; ne tražiti ga ponovo. Kapacitet/obim obavezanog sprinta ostaje nepotvrđen. Aktivacija ne potvrđuje Windows toolchain ili završetak faze; dokazi početne implementacije navedeni su u README-u.
+Precizan sljedeći korak: `bmad:dev-story STORY-026`. STORY-024 i STORY-025 su `completed`, ostale priče `not_started`. STORY-025 ima [Windows dokaze](../architecture/STORY-025_WINDOWS_VERIFICATION.md), dopunjene vlasnikovom potvrdom uspješne manuelne provjere AC-06 od 12.10.2026. Odobrenje Faze 01 i početka implementacije je već dato; ne tražiti ga ponovo. Kapacitet/obim obavezanog sprinta ostaje nepotvrđen. Windows toolchain, shell i opseg transporta STORY-025 su dokazani; preostali lifecycle/stream i installer ostaju zasebni dokazi. Faza 02 nije aktivirana.

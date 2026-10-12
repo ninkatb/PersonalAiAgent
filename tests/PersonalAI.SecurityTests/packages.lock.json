@@ -93,8 +93,28 @@
           "xunit.extensibility.core": "[2.9.3]"
         }
       },
+      "personalai.api": {
+        "type": "Project",
+        "dependencies": {
+          "PersonalAI.Application": "[1.0.0, )",
+          "PersonalAI.Infrastructure": "[1.0.0, )"
+        }
+      },
+      "personalai.application": {
+        "type": "Project",
+        "dependencies": {
+          "PersonalAI.Domain": "[1.0.0, )"
+        }
+      },
       "personalai.domain": {
         "type": "Project"
+      },
+      "personalai.infrastructure": {
+        "type": "Project",
+        "dependencies": {
+          "PersonalAI.Application": "[1.0.0, )",
+          "PersonalAI.Domain": "[1.0.0, )"
+        }
       }
     }
   }

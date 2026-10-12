@@ -3,7 +3,7 @@
 - **Datum:** 11.10.2026. (`2026-10-11`)
 - **Verzija:** 1.1; dopuna pamćenja teme i UX predaje 12.10.2026.
 - **Izvori:** [PRD 1.1](prd.md), [početni plan](../codex-plan/00_START_HERE.md), [odluke](../codex-plan/DECISIONS.md), [I18N_SPEC 1.2](../codex-plan/I18N_SPEC.md), [AGENTS.md](../../AGENTS.md), [ADR-001](../architecture/ADR-001_LOCALIZATION.md), [ADR-005](../architecture/ADR-005_THEME_PERSISTENCE.md).
-- **Status:** Projektantska razrada cijelog MVP-a 01–09; početna struktura Faze 01 je dodana kroz STORY-024. Aplikacija u cjelini nije implementirana.
+- **Status:** Projektantska razrada cijelog MVP-a 01–09; STORY-024 je završena uz Windows provjeru praznog lokalizovanog shell-a. [Izvještaj](../architecture/STORY-024_WINDOWS_VERIFICATION.md) sadrži dokaze i granice. Aplikacija u cjelini nije implementirana.
 - **Aktivna implementaciona faza:** Faza 01, izričito aktivirana zahtjevom vlasnika 12.10.2026. Njen detaljni fajl je pročitan pri aktivaciji; ostali detaljni fajlovi faza nisu učitavani. Ova arhitektura ne zamjenjuje pojedinačne kriterijume faze.
 - **Provjera spremnosti:** [gate-check.md](gate-check.md); odluka `CONDITIONAL PASS` odnosi se na planiranje, uz preduslove iz odjeljka 11.
 
@@ -37,7 +37,7 @@ Izabran je **modularni monolit** u .NET sidecar procesu, sa slojevima `Domain �
 
 Nivo BMAD projekta 3 opisuje opseg, ne zahtijeva mikroservise. Jedna instalacija, jedan vlasnik i lokalne transakcije opravdavaju monolit: jednostavnije izdanje, manje mrežnih granica i jedno mjesto za lock/dozvole. Cijena je zajednički proces i pažljivo upravljanje memorijom/poslovima. Granice se provjeravaju referencama projekata i ugovornim testovima, bez distribuiranog brokera, event sourcing-a ili proizvoljno učitanih dodataka.
 
-Planirana struktura, koja sada ne postoji. Usklađivanje tokom sprint planiranja 12.10.2026. prati mjerodavne nazive i razdvajanje aplikacija iz Faze 01; granice slojeva ostaju iste:
+Osnovna struktura je dodana kroz STORY-024, a zaštićeni health transport kroz završenu STORY-025. Storage i poslovni adapteri još nisu implementirani. [Windows izvještaj](../architecture/STORY-025_WINDOWS_VERIFICATION.md) bilježi lokalne transportne dokaze i vlasnikovu manuelnu potvrdu AC-06 od 12.10.2026; lifecycle/stream i installer ostaju preostali obim. Usklađivanje tokom sprint planiranja 12.10.2026. prati mjerodavne nazive i razdvajanje aplikacija iz Faze 01; granice slojeva ostaju iste:
 
 ```text
 apps/web/                    React, TypeScript strict, locales/
@@ -385,6 +385,8 @@ Mobilni/udaljeni pristup, cloud sync, dodatni OS, glas i komercijalna infrastruk
 G-001 ima konkretnu mjeru, odgovornost i kontrolni datum radi `CONDITIONAL PASS` po BMAD kriterijumima. Datum nije vlasnikovo odobrenje, rok isporuke ili automatski zakazan posao. Provjera/izbor koji zahtijeva rad iz neaktivne faze čeka njeno izričito aktiviranje. Ako kritičan uslov ostane bez izvodljive mjere, naredna provjera je `FAIL`.
 
 Završena je arhitektonska dokumentacija, bez implementacionih acceptance dokaza. Prilikom aktiviranja faze učitati samo njen detaljni fajl, uskladiti kriterijume sa ovom sljedivošću i razložiti priče. Preporučeni naredni korak je `bmad:ux-design`; zatim planiranje sprinta ograničenog na fazu koju vlasnik izričito zatraži. Prvi mogući implementacioni korak ostaje Faza 01.
+
+STORY-026 implementira atomarno Windows vlasništvo procesa, profil lease, opoziv pri prekidu/suspend/resume i povezano HTTP cancellation, bez novog vault/storage opsega. [ADR-002](../architecture/ADR-002_LOCAL_TRANSPORT.md) i [Windows dokaz](../architecture/STORY-026_WINDOWS_VERIFICATION.md) preciziraju implementaciju. G-002 ostaje otvoren zbog stvarnog sleep/resume-a, vizuelne provjere i kasnije objedinjene STORY-030 predaje. Sintetički stream je ograničen na test host; produkcija ostaje zaključana i ima samo health.
 
 ## Dodatak: izvori i evidencija <!-- Appendix; documentation -->
 

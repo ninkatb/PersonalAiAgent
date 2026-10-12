@@ -1,8 +1,8 @@
 {
   "identifier": "main",
-  "description": "Minimalni shell bez privilegovanih renderer operacija.",
+  "description": "Samo tipizovana health operacija lokalnog glavnog prozora.",
   "windows": [
     "main"
   ],
-  "permissions": []
+  "permissions": ["allow-backend-health", "core:event:allow-listen", "core:event:allow-unlisten"]
 }

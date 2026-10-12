@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "dev": "tauri dev",
-    "build": "tauri build",
+    "dev": "powershell -NoProfile -File ../../scripts/prepare-sidecar.ps1 -Configuration Debug && tauri dev",
+    "build": "powershell -NoProfile -File ../../scripts/prepare-sidecar.ps1 -Configuration Debug && powershell -NoProfile -File ../../scripts/prepare-sidecar.ps1 -Configuration Release && tauri build",
     "info": "tauri info"
   },
   "devDependencies": {

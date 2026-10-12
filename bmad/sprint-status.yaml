@@ -1,5 +1,5 @@
 # BMAD status sprinta
-# Faza 01 je aktivirana; STORY-024 je u toku, a sprint ostaje uslovan.
+# Faza 01 je aktivirana; STORY-024/025 su završene, STORY-026 je u toku; sprint ostaje uslovan.
 
 project:
   name: "Personal AI Agent"
@@ -25,7 +25,7 @@ implementation:
   authorized_at: "2026-10-12T05:42:08Z"
   authorization_request: "Sljedeći korak: izričito aktiviranje Faze 01"
   started: true
-  note: "Vlasnik je odobrio aktivaciju i početak implementacije. STORY-024 je u toku; kapacitet sprinta i acceptance dokazi nisu potvrđeni aktivacijom."
+  note: "Vlasnik je odobrio aktivaciju i početak implementacije. STORY-024/025 su završene; STORY-026 je implementirana uz automatizovane Windows dokaze i čeka stvarni sleep/resume i vizuelni pregled. Kapacitet i rok sprinta ostaju nepotvrđeni. Faza 01 nije završena."
 
 capacity:
   confirmed: false
@@ -51,7 +51,7 @@ epics:
     phase: "01"
     total_stories: 7
     total_points: 33
-    completed_points: 0
+    completed_points: 10
 
 stories:
   - id: STORY-024
@@ -60,8 +60,10 @@ stories:
     parent_ids: [STORY-001, STORY-002]
     points: 5
     priority: MUST
-    status: in_progress
+    status: completed
     started_at: "2026-10-12T05:51:13Z"
+    completed_at: "2026-10-12T07:12:47Z"
+    evidence_file: "docs/architecture/STORY-024_WINDOWS_VERIFICATION.md"
     sprint_planned: 1
     dependencies: []
     output_file: "docs/stories/STORY-024.md"
@@ -71,7 +73,10 @@ stories:
     parent_ids: [STORY-001]
     points: 5
     priority: MUST
-    status: not_started
+    status: completed
+    started_at: "2026-10-12T09:39:00Z"
+    completed_at: "2026-10-12T11:59:08Z"
+    evidence_file: "docs/architecture/STORY-025_WINDOWS_VERIFICATION.md"
     sprint_planned: 1
     dependencies: [STORY-024]
     output_file: "docs/stories/STORY-025.md"
@@ -81,7 +86,9 @@ stories:
     parent_ids: [STORY-001]
     points: 5
     priority: MUST
-    status: not_started
+    status: in_progress
+    started_at: "2026-10-12T12:29:40Z"
+    evidence_file: "docs/architecture/STORY-026_WINDOWS_VERIFICATION.md"
     sprint_planned: 1
     dependencies: [STORY-025]
     output_file: "docs/stories/STORY-026.md"
@@ -145,7 +152,7 @@ entry_conditions:
 risks:
   - id: G-002
     status: open
-    description: "Windows transport, privatni kanal, stream, cleanup i sleep čekaju dokaz u STORY-025/026/030."
+    description: "STORY-025 je završena. STORY-026 ima automatizovane cleanup/crash/startup/restart/instance/profile/cancellation i sintetičke native power dokaze; stvarni sleep/resume i vizuelna native provjera ostaju otvoreni. Installer i objedinjena predaja ostaju STORY-030."
   - id: G-001
     status: open
     scope: "Buduća Faza 02"
@@ -157,14 +164,14 @@ metrics:
   total_stories: 7
   proposed_sprint_stories: 3
   backlog_stories: 4
-  completed_stories: 0
+  completed_stories: 2
   in_progress_stories: 1
   blocked_stories: 0
   total_points: 33
   proposed_sprint_points: 15
   backlog_points: 18
-  completed_points: 0
-  remaining_points: 33
-  completion_percentage: 0
+  completed_points: 10
+  remaining_points: 23
+  completion_percentage: 30.3
 
-last_updated: "2026-10-12T06:04:32Z"
+last_updated: "2026-10-12T12:29:40Z"

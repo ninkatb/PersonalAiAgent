@@ -31,11 +31,14 @@ jobs:
         working-directory: apps/web
       - run: npm run test:catalogs
         working-directory: apps/web
-      - run: npm test
+      - run: npm run test:coverage
         working-directory: apps/web
       - name: Windows desktop shell (no installer or sidecar yet)
         if: runner.os == 'Windows'
         run: |
-          rustup toolchain install 1.99.0 --profile minimal --component rustfmt
+          rustup toolchain install 1.99.0 --profile minimal --component rustfmt --component clippy
           npm ci --prefix apps/desktop
-          npm --prefix apps/desktop run build -- --no-bundle
+          npm --prefix apps/desktop run build -- --debug --no-bundle -- --locked
+          cargo fmt --manifest-path apps/desktop/src-tauri/Cargo.toml --check
+          cargo test --locked --manifest-path apps/desktop/src-tauri/Cargo.toml
+          cargo clippy --locked --manifest-path apps/desktop/src-tauri/Cargo.toml --all-targets -- -D warnings

@@ -1,4 +1,10 @@
 {
+  "health.title": "Local service",
+  "health.idle": "The local service has not been checked yet.",
+  "health.checking": "Checking the local service…",
+  "health.ok": "The local service is available.",
+  "health.failed": "The local service is unavailable. Restart the application and try again.",
+  "health.check": "Check availability",
   "common.skipMain": "Skip to main content",
   "common.empty": "There are no items in this view.",
   "nav.overview": "Overview",

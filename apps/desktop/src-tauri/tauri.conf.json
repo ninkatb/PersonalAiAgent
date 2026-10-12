@@ -13,7 +13,8 @@
     "windows": [
       {
         "label": "main",
-        "title": "Personal AI Agent",
+        "create": false,
+        "title": "",
         "width": 1180,
         "height": 780,
         "minWidth": 720,

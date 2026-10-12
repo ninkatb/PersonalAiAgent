@@ -1,4 +1,10 @@
 {
+  "health.title": "Lokalni servis",
+  "health.idle": "Lokalni servis još nije proveren.",
+  "health.checking": "Provera lokalnog servisa je u toku…",
+  "health.ok": "Lokalni servis je dostupan.",
+  "health.failed": "Lokalni servis nije dostupan. Ponovo pokreni aplikaciju i pokušaj ponovo.",
+  "health.check": "Proveri dostupnost",
   "common.skipMain": "Pređi na glavni sadržaj",
   "common.empty": "Nema stavki u ovom prikazu.",
   "nav.overview": "Pregled",

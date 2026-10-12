@@ -1,0 +1,4 @@
+[[permission]]
+identifier = "allow-backend-health"
+description = "Allows only the typed harmless health operation."
+commands.allow = ["backend_health"]

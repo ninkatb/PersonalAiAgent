@@ -3,7 +3,7 @@
 - **Epik:** EPIC-001; roditelj STORY-001.
 - **Prioritet:** MUST.
 - **Procjena:** 5 bodova, uslovna; privatni handshake i tri transportne granice zahtijevaju negativne scenarije.
-- **Status:** not_started; kandidat sprinta 1. Faza 01 je aktivirana 12.10.2026; rad na priči još nije počeo.
+- **Status:** completed; implementacija i lokalne Windows provjere sprovedene su 12.10.2026. Vlasnik je istog dana potvrdio uspješnu manuelnu provjeru AC-06; potvrda je evidentirana u Windows izvještaju. Faza 01 ostaje aktivna i nezavršena.
 - **Sljedivost:** FR-001 djelimično; NFR-001/003/007/012; TC-001/101/103/107/112; F01-AC-02/03/05; G-002.
 
 ## Korisnička priča
@@ -12,12 +12,12 @@ Kao vlasnik želim da desktop provjeri stanje svog lokalnog backend-a kroz zašt
 
 ## Kriterijumi prihvatanja
 
-- [ ] AC-01: ASP.NET binduje isključivo `127.0.0.1:0`; desktop dobija stvarni dodijeljeni port privatnim startup handshake-om. Greška handshaka zaustavlja sesiju bez rezervnog javnog listenera.
-- [ ] AC-02: Rust generiše kriptografski nasumičan token za svaku sesiju i predaje ga sidecar-u privatnim naslijeđenim kanalom prema ADR-002. Token nije u rendereru, argv/env, URL-u, bootstrap-u, logu ili trajnom fajlu.
-- [ ] AC-03: Svaka stvarna ruta, uključujući `/health`, zahtijeva važeći token, tačan session-bound Origin i Host. Nedostajući/pogrešan token i Origin/Host se odbijaju; ograničeni CORS preflight ne otkriva podatke i ne odobrava nedozvoljen origin.
-- [ ] AC-04: Renderer koristi samo poznatu, tipizovanu Rust IPC operaciju za health; ne može zadati URL, metod, header, putanju ili komandu. Rezultat sadrži samo bezopasan status i UI ga prikazuje na sve tri lokalizacije.
-- [ ] AC-05: DTO validacija i globalni handler vraćaju stabilan errorCode i bezbjedan ProblemDetails bez stack trace-a; strukturisani logovi rediguju sintetičke tajne. Neočekivana greška ne vraća sadržaj zahtjeva UI-ju.
-- [ ] AC-06: Pozitivan desktop → Rust → API scenario prolazi; direktni neautorizovani poziv, lokalni browser sa zabranjenim origin-om i pristup sa drugog računara ne mogu dobiti zaštićeni odgovor. Normalno zatvaranje desktop-a uklanja njegov sidecar.
+- [x] AC-01: ASP.NET binduje isključivo `127.0.0.1:0`; desktop dobija stvarni dodijeljeni port privatnim startup handshake-om. Greška handshaka zaustavlja sesiju bez rezervnog javnog listenera.
+- [x] AC-02: Rust generiše kriptografski nasumičan token za svaku sesiju i predaje ga sidecar-u privatnim naslijeđenim kanalom prema ADR-002. Token nije u rendereru, argv/env, URL-u, bootstrap-u, logu ili trajnom fajlu.
+- [x] AC-03: Svaka stvarna ruta, uključujući `/health`, zahtijeva važeći token, tačan session-bound Origin i Host. Nedostajući/pogrešan token i Origin/Host se odbijaju; ograničeni CORS preflight ne otkriva podatke i ne odobrava nedozvoljen origin.
+- [x] AC-04: Renderer koristi samo poznatu, tipizovanu Rust IPC operaciju za health; ne može zadati URL, metod, header, putanju ili komandu. Rezultat sadrži samo bezopasan status i UI ga prikazuje na sve tri lokalizacije.
+- [x] AC-05: DTO validacija i globalni handler vraćaju stabilan errorCode i bezbjedan ProblemDetails bez stack trace-a; strukturisani logovi rediguju sintetičke tajne. Neočekivana greška ne vraća sadržaj zahtjeva UI-ju.
+- [x] AC-06: Pozitivan desktop → Rust → API scenario prolazi; direktni neautorizovani poziv, lokalni browser sa zabranjenim origin-om i pristup sa drugog računara ne mogu dobiti zaštićeni odgovor. Normalno zatvaranje desktop-a uklanja njegov sidecar.
 
 ## Implementacija i granice
 
@@ -35,4 +35,4 @@ Zavisi od STORY-024 i aktiviranja Faze 01; blokira STORY-026. Nepotpuni kanal, l
 - Integration/security: HTTP negativna matrica, preflight i bind; provjera da port nije LAN listener; Windows mrežni scenario sa drugim uređajem ili izolovanom VM.
 - Desktop: stvarni IPC health, lokalizovane greške i normalno gašenje procesa.
 
-Svaki AC ima rezultat i dokaz; sigurnosno kritične putanje imaju unit i integration provjere. Ažurirati README i dokaz transporta u docs/architecture. Svi navedeni testovi sada su planirani.
+Svaki AC ima rezultat i dokaz; sigurnosno kritične putanje imaju unit i integration provjere. Izvršene provjere, rezultati i vlasnikova potvrda manuelne provjere AC-06 nalaze se u [Windows izvještaju](../architecture/STORY-025_WINDOWS_VERIFICATION.md). AC-01–05 imaju lokalne dokaze; AC-06 je završen uz postojeće lokalne rezultate i vlasnikovu potvrdu od 12.10.2026. Sljedeća priča je STORY-026.
