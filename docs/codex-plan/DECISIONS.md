@@ -9,6 +9,29 @@
 - **API ključevi treba da budu u SQLite**, ali enkriptovani. Ne oslanjati se obavezno na OS Credential Manager.
 - Glavne funkcije: mejlovi, kalendar, dokumenti, obaveze, memorija, automatizacija.
 - **Tri lokalizacije od starta: SRB (Ekavica), SRB (Ijekavica) i ENG**, korisnik bira i trajno čuva podrazumijevani jezik i srpsku varijantu, bez ponovnog izbora pri svakom pokretanju.
+- **Govorno područje vlasnika: Republika Srpska.** Komunikacija, dokumentacija i lokalizacija SRB (Ijekavica) koriste srpsku latinicu i srpsku ijekavicu u upotrebi u Republici Srpskoj: „nisu”, „nisam”, „sutra”, uz „vrijeme”, „mlijeko”, „sljedeći” i „izvještaj”. Ne koristiti oblike „nijesu”, „nijesam” i „sjutra”. Postojeći kod `sr-Latn-RS-ijekavsk` ostaje isti; ovo je preciziranje jezičkog stila, ne nova lokalizacija niti promjena regionalnog formatiranja.
+
+### Dopuna iz razgovora za BMAD opis proizvoda — 11.10.2026.
+
+- Prvu verziju koristi samo vlasnik; komercijalni pilot i kupci nisu početni cilj.
+- Glavni korisnički scenariji su selekcija njemu važnih mejlova, prijedlozi odgovora i podsjećanje na ranije nepročitane poruke i nezavršene zadatke. Vlasnik trenutno radi sve ručno.
+- Željeni ishodi su ušteda vremena i isporuka obaveza na vrijeme. Početno mjerenje i brojčani pragovi još nisu potvrđeni.
+- Vlasnik želi cijeli definisani MVP u prvoj verziji i isporuku što ranije; konkretan datum nije dogovoren. Faza 10 ostaje kasniji opseg prema mjerodavnom planu.
+- Za sada nisu navedeni dodatni budžetski limiti, obavezne integracije ili rizici. Postojeće sigurnosne invarijante ostaju obavezne.
+- Detaljan opis i označene pretpostavke: [BMAD opis proizvoda](../bmad/product-brief.md). Ova dopuna ne aktivira implementacionu fazu.
+
+### Dopuna iz razgovora za BMAD PRD — 11.10.2026.
+
+- Vlasnik je izabrao kombinaciju svojih pravila i oznaka sa dodatnom AI preporukom važnosti mejla. Pravila i oznake imaju prednost; preporuka ima razlog i ne skriva ostalu poštu.
+- Potvrđen je podesiv dnevni objedinjeni pregled: nepročitani mejlovi stariji od 3 dana i nezavršeni zadaci koji kasne ili dospijevaju u naredna 24 sata. Vrijeme pregleda bira se pri podešavanju.
+- Poslije zaključavanja prikazuje se jedan naknadni pregled aktuelno podobnih stavki. Poslovi i dalje rade samo uz aktivan backend i otključan vault.
+- [PRD](../bmad/prd.md) razrađuje kriterijume, granice vremena, sljedivost i otvorene odluke. Brojčani ciljevi uspjeha i rok isporuke nisu potvrđeni; ova dopuna ne aktivira implementacionu fazu.
+
+### Dopuna iz razgovora za BMAD UX — 12.10.2026.
+
+- Vlasnik je potvrdio da korisnik bira svijetlu ili tamnu temu i da se izbor pamti za buduća prijavljivanja, bez ponovnog podešavanja.
+- `ui.theme = light | dark` je nezavisna trajna postavka. Kanonsko čuvanje i nesenzitivna bootstrap kopija za zaključani ekran razrađeni su u [ADR-005](../architecture/ADR-005_THEME_PERSISTENCE.md). Svijetla tema za novu instancu bez sačuvanog izbora ostaje UX prijedlog.
+- [UX specifikacija](../bmad/ux-design.md) razrađuje ekrane, tokove i planirane provjere. Zahtjev za UX i izbor teme ne aktiviraju implementacionu fazu.
 
 ## Projektantske pretpostavke koje omogućavaju odmah početi
 
@@ -20,7 +43,7 @@
 | Katalozi i formatiranje | Tri zasebna kataloga; srpske varijante koriste `sr-Latn-RS` za `Intl`/backend formatiranje | Varijanta bira prevod i AI preferenciju; ne zahtijeva zasebne regionalne formate |
 | Prvi izbor prema OS-u | Eksplicitna podržana varijanta se zadržava; srpski bez varijante predlaže ekavicu; ostali nepodržani jezici `en-US` | Samo prijedlog pri novoj instalaciji; sačuvana postavka uvijek ima prednost |
 | Kompatibilnost v1.1 | Ranije sačuvani `sr-Latn-RS` normalizuje se u `sr-Latn-RS-ijekavsk` u UI i AI postavkama | Očuvana prethodna ijekavica; migracija je idempotentna, uz test bootstrap/SQLite/restore putanje |
-| Lokalni startup | Samo `ui.locale` u nesenzitivnom bootstrap fajlu prije unlock-a; poslije kanonski u enkriptovanoj SQLite | Zaključani ekran prikazuje izabrani jezik bez pristupa vaultu |
+| Lokalni startup | Samo `ui.locale` i `ui.theme` u nesenzitivnom bootstrap fajlu prije unlock-a; poslije kanonski u enkriptovanoj SQLite | Zaključani ekran prikazuje sačuvani jezik i temu bez pristupa vaultu; ADR-005 proširuje allowlist samo za temu |
 | Desktop stack | Tauri 2 + React/TypeScript + .NET 10 sidecar | Izolovati lokalni transport |
 | DB | SQLite preko **SQLCipher** za cjelokupnu bazu + AES-GCM tajne u kolonama | Zahtijeva provjeren native SQLCipher build |
 | Unlock | Korisnička master lozinka / fraza, Argon2id | Bez obavezne zavisnosti od OS keychaina |

@@ -1,0 +1,167 @@
+# BMAD status sprinta
+# Uslovni plan bez kalendarskog roka; razvoj nije započet ni odobren.
+
+project:
+  name: "Personal AI Agent"
+  level: 3
+
+sprint:
+  number: 1
+  status: "not_started"
+  planning_status: "conditional"
+  start_date: null
+  end_date: null
+  goal: "Pokretna prazna desktop aplikacija u tri lokalizacije, zaštićeni health i bezbjedan sidecar lifecycle."
+  capacity_points: null
+  proposed_points: 15
+  committed_points: 0
+  story_ids: [STORY-024, STORY-025, STORY-026]
+  output_file: "docs/bmad/sprint-plan.md"
+
+implementation:
+  active_phase: null
+  candidate_phase: "01"
+  authorized: false
+  started: false
+  note: "Vlasnik je izabrao uslovni plan bez kalendarskog roka; za razvoj treba izričito aktivirati Fazu 01."
+
+capacity:
+  confirmed: false
+  team_size: null
+  available_dev_days: null
+  scenario:
+    development_flows: 1
+    available_dev_days: 10
+    points_per_dev_day: 2
+    base_points: 20
+    reserve_percentage: 20
+    adjusted_points: 16
+    note: "Isključivo scenario provjere obima; nije potvrđen tim, trajanje ili kapacitet."
+
+velocity:
+  current_sprint: null
+  rolling_average: null
+  history: []
+
+epics:
+  - id: EPIC-001
+    name: "Desktop osnova i jezici"
+    phase: "01"
+    total_stories: 7
+    total_points: 33
+    completed_points: 0
+
+stories:
+  - id: STORY-024
+    title: "Pokretna osnova i lokalizovana navigacija"
+    epic: EPIC-001
+    parent_ids: [STORY-001, STORY-002]
+    points: 5
+    priority: MUST
+    status: not_started
+    sprint_planned: 1
+    dependencies: []
+    output_file: "docs/stories/STORY-024.md"
+  - id: STORY-025
+    title: "Zaštićeni lokalni health kroz Rust most"
+    epic: EPIC-001
+    parent_ids: [STORY-001]
+    points: 5
+    priority: MUST
+    status: not_started
+    sprint_planned: 1
+    dependencies: [STORY-024]
+    output_file: "docs/stories/STORY-025.md"
+  - id: STORY-026
+    title: "Životni ciklus i izolacija sidecar procesa"
+    epic: EPIC-001
+    parent_ids: [STORY-001]
+    points: 5
+    priority: MUST
+    status: not_started
+    sprint_planned: 1
+    dependencies: [STORY-025]
+    output_file: "docs/stories/STORY-026.md"
+  - id: STORY-027
+    title: "Jezičko formatiranje i potpuna provjera kataloga"
+    epic: EPIC-001
+    parent_ids: [STORY-002]
+    points: 5
+    priority: MUST
+    status: not_started
+    sprint_planned: null
+    dependencies: [STORY-024]
+    output_file: "docs/stories/STORY-027.md"
+  - id: STORY-028
+    title: "Trajni UI jezik i bezbjedan bootstrap"
+    epic: EPIC-001
+    parent_ids: [STORY-002]
+    points: 5
+    priority: MUST
+    status: not_started
+    sprint_planned: null
+    dependencies: [STORY-024]
+    output_file: "docs/stories/STORY-028.md"
+  - id: STORY-029
+    title: "Svijetla i tamna tema sa trajnim izborom"
+    epic: EPIC-001
+    parent_ids: [STORY-022]
+    points: 3
+    priority: MUST
+    status: not_started
+    sprint_planned: null
+    dependencies: [STORY-027, STORY-028]
+    output_file: "docs/stories/STORY-029.md"
+  - id: STORY-030
+    title: "CI, Windows paket i dokazi Faze 01"
+    epic: EPIC-001
+    parent_ids: [STORY-001]
+    points: 5
+    priority: MUST
+    status: not_started
+    sprint_planned: null
+    dependencies: [STORY-024, STORY-025, STORY-026, STORY-027, STORY-028, STORY-029]
+    output_file: "docs/stories/STORY-030.md"
+
+backlog_story_ids: [STORY-027, STORY-028, STORY-029, STORY-030]
+
+entry_conditions:
+  - id: PHASE-01-AUTHORIZATION
+    status: pending
+    scope: "Sve implementacione priče"
+    description: "Izričit zahtjev vlasnika za implementaciju Faze 01."
+  - id: CAPACITY-CONFIRMATION
+    status: pending
+    scope: "Obavezivanje sprinta"
+    description: "Potvrditi kapacitet i konačan obim; kalendarski rok nije potreban."
+  - id: BOOTSTRAP-GATE
+    status: pending
+    scope: "STORY-028, STORY-029"
+    description: "Nova gate provjera dopunjene allowlist-e i negativnih scenarija prije implementacije."
+
+risks:
+  - id: G-002
+    status: open
+    description: "Windows transport, privatni kanal, stream, cleanup i sleep čekaju dokaz u STORY-025/026/030."
+  - id: G-001
+    status: open
+    scope: "Buduća Faza 02"
+    description: "SQLCipher/licenca/KDF/recovery/crash uslov ostaje otvoren; nema plaintext fallback-a."
+
+burndown: []
+
+metrics:
+  total_stories: 7
+  proposed_sprint_stories: 3
+  backlog_stories: 4
+  completed_stories: 0
+  in_progress_stories: 0
+  blocked_stories: 0
+  total_points: 33
+  proposed_sprint_points: 15
+  backlog_points: 18
+  completed_points: 0
+  remaining_points: 33
+  completion_percentage: 0
+
+last_updated: "2026-10-12T05:21:03Z"

@@ -6,7 +6,7 @@
 
 1. Aplikacija od **prve funkcionalne verzije** podržava **tri ravnopravne lokalizacije**. Podržani BCP 47 identifikatori:
    - `sr-Latn-RS-ekavsk` — **SRB (Ekavica)**, srpski, latinica, ekavica.
-   - `sr-Latn-RS-ijekavsk` — **SRB (Ijekavica)**, srpski, latinica, ijekavica.
+   - `sr-Latn-RS-ijekavsk` — **SRB (Ijekavica)**, srpski, latinica, ijekavica u upotrebi u Republici Srpskoj.
    - `en-US` — **ENG**, engleski (SAD).
    Obje srpske varijante koriste dijakritičke znakove (č, ć, š, đ, ž) i imaju zasebne, jezički provjerene kataloge. Ne pretvarati jednu u drugu automatskom zamjenom znakova. `ekavsk` i `ijekavsk` su registrovane varijante u [IANA registru](https://www.iana.org/assignments/lang-subtags-templates).
 2. Korisnik u prvom pokretanju bira **podrazumijevani jezik aplikacije (UI locale)** i poslije ga može promijeniti u `Settings > Profile & Language`, bez reinstalacije i bez ponovnog biranja pri svakom pokretanju.
@@ -15,6 +15,14 @@
 5. Sačuvati izbor **po privatnoj instanci/vlasniku**; izlazak iz aplikacije, gašenje računara, restart, ažuriranje aplikacije i zaključavanje/otključavanje vaulta ne smiju poništiti postavku.
 6. Prvi izbor pri **novoj instalaciji bez sačuvane postavke**: podržani puni kod zadrži; srpski OS sa eksplicitnom varijantom `ijekavsk` predlaže `sr-Latn-RS-ijekavsk`, sa `ekavsk` predlaže `sr-Latn-RS-ekavsk`. Srpski OS bez varijante (npr. `sr`, `sr-RS`, `sr-Latn-RS`, `sr-Cyrl-RS`) predlaže **ekavicu, latinicom**. Engleski OS predlaže `en-US`; drugi nepodržani jezici koriste `en-US`. Ne zaključivati izgovor iz države niti automatski mapirati hrvatski ili bosanski na srpski. Korisnik na onboarding ekranu može izmijeniti prijedlog. Nakon izbora prioritet je trajno sačuvana korisnička postavka, a ne jezik OS-a. Ranije **sačuvani** `sr-Latn-RS` ima drugo značenje i migrira se u ijekavicu, prema pravilima kompatibilnosti ispod.
 7. Dodavanje novih jezika mora biti moguće uvođenjem kataloga i registracijom lokalizacije bez izmjena u Agent Core-u ili šemi poslovnih tabela. Srpska ćirilica je **moguća buduća zasebna lokalizacija**, nije obavezna za v1.
+
+## Jezički stil srpske ijekavice
+
+- Vlasnik je iz Republike Srpske. Komunikacija sa vlasnikom, projektna i BMAD dokumentacija, katalog `sr-Latn-RS-ijekavsk`, sistemske poruke i AI odgovori sa izabranom ijekavicom koriste srpsku ijekavicu u upotrebi u Republici Srpskoj.
+- Koristiti „nisam”, „nisi”, „nije”, „nismo”, „niste”, „nisu” i „sutra”. Ne koristiti „nijesam”, „nijesi”, „nijesmo”, „nijeste”, „nijesu” ili „sjutra”. Zadržati ijekavske oblike „vrijeme”, „mlijeko”, „sljedeći”, „prije” i „izvještaj”; preciziranje govornog područja ne znači prelazak na ekavicu.
+- Uputstvo modelu za `agent.responseLanguage = sr-Latn-RS-ijekavsk` mora eksplicitno navesti: „Odgovaraj na srpskom jeziku, latinicom, ijekavicom u upotrebi u Republici Srpskoj. Koristi nisu, nisam i sutra; zadrži ijekavske oblike poput vrijeme, sljedeći i izvještaj.” Eksplicitni korisnički zahtjev za drugim jezikom ili varijantom i dalje ima prednost.
+- Kodovi lokalizacija, nazivi tri jezička izbora, regionalno formatiranje i pravila migracije ostaju isti. Ovo je jezičko preciziranje postojećeg ijekavskog kataloga, a ne dodatna lokalizacija.
+- Izvorni korisnički dokumenti, mejlovi i citati zadržavaju originalni tekst; jezičko pravilo se primjenjuje na tekst koji aplikacija ili agent sastavlja.
 
 ## Tehnička implementacija
 
@@ -31,7 +39,7 @@
 ### Trajno pamćenje i zaključan vault
 
 - Poslije Faze 02 kanonski zapis u enkriptovanoj SQLite bazi, tabela npr. `UserSettings(OwnerId, Key, ValueJson, UpdatedAtUtc)`, sa `ui.locale = sr-Latn-RS-ekavsk | sr-Latn-RS-ijekavsk | en-US` i `agent.responseLanguage = follow-user | sr-Latn-RS-ekavsk | sr-Latn-RS-ijekavsk | en-US`.
-- **Prije otključavanja SQLCipher vaulta**, ekran za otključavanje takođe treba prikazati na izabranom jeziku. Zato u lokalnom, neosjetljivom konfiguracionom fajlu (npr. `bootstrap.json`, izvan Git repozitorijuma i zaštićen aplikacionim direktorijumom) smije postojati **samo** kopija `ui.locale` i neosjetljivi podaci potrebni za pokretanje. Ne upisivati API ključeve, tokene, lozinke, korisnički profil, istoriju ili `agent.responseLanguage` u taj fajl.
+- **Prije otključavanja SQLCipher vaulta**, ekran za otključavanje takođe treba prikazati na izabranom jeziku. Zato u lokalnom, neosjetljivom konfiguracionom fajlu (npr. `bootstrap.json`, izvan Git repozitorijuma i zaštićen aplikacionim direktorijumom) smije postojati **samo** kopija `ui.locale` i neosjetljivi podaci potrebni za pokretanje. Izričita dopuna od 12.10.2026. dozvoljava i `ui.theme = light | dark` prema [ADR-005](../architecture/ADR-005_THEME_PERSISTENCE.md), radi potvrđenog zahtjeva za pamćenje svijetle/tamne teme. Allowlist sada sadrži te dvije UI postavke; ne dodaje proizvoljna polja. Ne upisivati API ključeve, tokene, lozinke, korisnički profil, istoriju ili `agent.responseLanguage` u taj fajl. Jezik i tema se čuvaju nezavisno i upis jednog ne smije izgubiti drugo.
 - Prilikom promjene UI jezika dok je vault otključan: validiraj `locale`, **upis u SQLite mora uspjeti** prije potvrđivanja promjene, potom bezbjedno i atomarno osvježi bootstrap kopiju. Ako kopiranje u bootstrap ne uspije, prijavi i popravi/sinhronizuj pri sljedećem startu. Pri otključavanju kanonska SQLite vrijednost pobjeđuje i ispravlja bootstrap kopiju. Ne dozvoliti proizvoljne putanje ili JSON polja.
 - U Fazi 01, prije implementacije vaulta, minimalna lokalna postavka `ui.locale` može se čuvati samo u tom bezbjednom bootstrap fajlu; Faza 02 je migrira u SQLite. Testirati migraciju, backup/restore, novi uređaj i povratak na staru konfiguraciju.
 - Nikada ne brisati korisnikov izabrani jezik prilikom nadogradnje verzije ili promjene provajdera. Promjena UI jezika ne mijenja bezbjednosne dozvole.
@@ -62,10 +70,12 @@
 8. Oštećen/nevažeći bootstrap locale bezbjedno pada na `en-US`; ne ruši pokretanje i ne kreira pristup podacima.
 9. Stari sačuvani `sr-Latn-RS` u bootstrap/SQLite/backup-u postaje `sr-Latn-RS-ijekavsk`, zasebno za UI i AI jezik. Testirati ponovljenu migraciju, prelaz bootstrap → SQLite, restore, novi uređaj, prekid/grešku upisa i sukob kanonske vrijednosti sa bootstrap kopijom, bez gubitka podataka. `en-US`, `follow-user` i novi puni kodovi ostaju sačuvani.
 10. Nevažeći kodovi i proizvoljna bootstrap polja/putanje su odbijeni; puni srpski kodovi se ne skraćuju pri API validaciji, učitavanju kataloga ili upisu postavki. Za predviđeni povratak na staru konfiguraciju dokazati da se nepodržana ekavska varijanta ne konvertuje tiho u ijekavicu.
+11. Jezička provjera ijekavskog kataloga i poruka koje aplikacija sastavlja potvrđuje oblike „nisu”, „nisam” i „sutra”, uz ispravne ijekavske oblike poput „vrijeme” i „izvještaj”. Automatizovana provjera uputstva modelu potvrđuje eksplicitnu odrednicu za Republiku Srpsku; ručna provjera AI odgovora potvrđuje isti stil. Oblici navedeni kao nepoželjni u odjeljku o jezičkom stilu ne smiju se pojavljivati u tekstu koji aplikacija sastavlja; izvorni citati i korisnički sadržaj izuzeti su od te provjere.
 
 ## Definition of Done
 
 - [ ] SRB (Ekavica), SRB (Ijekavica) i ENG imaju potpunu pokrivenost svih MVP ekrana i sistemskih korisničkih poruka, u tri zasebna kataloga.
+- [ ] Ijekavski tekstovi i uputstvo za AI odgovore prate srpsku ijekavicu u upotrebi u Republici Srpskoj, sa oblicima „nisu”, „nisam” i „sutra”.
 - [ ] Izabrani default jezik i srpska varijanta se pamte između pokretanja, ažuriranja i zaključavanja.
 - [ ] Ekran za otključavanje radi na sačuvanom jeziku bez otključavanja šifrovane baze.
 - [ ] Jezik UI-ja i jezik AI odgovora su odvojene, jasno objašnjene postavke.

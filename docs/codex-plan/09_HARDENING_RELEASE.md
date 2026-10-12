@@ -20,7 +20,7 @@ Završiti MVP kao stabilnu lokalnu desktop aplikaciju spremnu za ograničeni tes
 - Tauri 2 Windows x64 installer uključuje pravilan .NET sidecar, potrebne native biblioteke za SQLCipher i startup lifecycle.
 - Signed installer i verified update artefakti; ako nema code-signing certifikata, **ne tvrditi da je release potpisan**. Za komercijalnu isporuku definisati postupak pribavljanja certifikata i Tauri updater signing.
 - Migracije izvodi backend sa provjerom integriteta i prethodnom šifrovanom rezervnom kopijom; nema downgrade-a koji bi obrisao korisničke podatke.
-- Odvojiti debug i release: debug console, EF sensitive logging, dev origin i test API ključevi nijesu dostupni u releaseu.
+- Odvojiti debug i release: debug console, EF sensitive logging, dev origin i test API ključevi nisu dostupni u releaseu.
 - Uninstaller ne briše privatne podatke automatski bez jasne potvrde; omogućiti eksplicitno sigurno uklanjanje korisničke instance uz pojašnjenje ograničenja fizičkog brisanja na SSD-u.
 
 ## Test matrica

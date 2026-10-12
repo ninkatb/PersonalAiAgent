@@ -1,0 +1,88 @@
+# BMAD status tokova rada
+# Četiri BMAD faze nisu implementacione faze iz docs/codex-plan/.
+
+project:
+  name: "Personal AI Agent"
+  level: 3
+  initialized: "2026-10-11T21:01:41Z"
+  last_updated: "2026-10-12T05:21:03Z"
+current_phase: 4
+current_workflow: "sprint_planning"
+implementation_phase: null
+implementation_authorized: false
+phases:
+  phase_1_analysis:
+    name: "Analiza"
+    status: "in_progress" # Mašinske vrijednosti: not_started, in_progress, completed.
+    workflows:
+      product_brief:
+        status: "required" # Mašinske vrijednosti: required, recommended, optional.
+        completed: true
+        output_file: docs/bmad/product-brief.md
+        completed_at: "2026-10-11T21:10:02Z"
+      research:
+        status: "optional"
+        completed: false
+        output_file: null
+        completed_at: null
+      brainstorm:
+        status: "optional"
+        completed: false
+        output_file: null
+        completed_at: null
+  phase_2_planning:
+    name: "Planiranje"
+    status: "in_progress"
+    workflows:
+      prd:
+        status: "required"
+        completed: true
+        output_file: docs/bmad/prd.md
+        completed_at: "2026-10-11T21:24:20Z"
+      tech_spec:
+        status: "optional"
+        completed: false
+        output_file: null
+        completed_at: null
+      ux_design:
+        status: "recommended"
+        completed: true
+        output_file: docs/bmad/ux-design.md
+        completed_at: "2026-10-12T05:06:35Z"
+  phase_3_solutioning:
+    name: "Projektovanje rješenja"
+    status: "completed"
+    workflows:
+      architecture:
+        status: "required"
+        completed: true
+        output_file: docs/bmad/architecture.md
+        completed_at: "2026-10-11T21:38:25Z"
+      gate_check:
+        status: "recommended"
+        completed: true
+        passed: false # Nema bezuslovnog PASS; detaljna odluka je uslovni prolaz.
+        decision: "CONDITIONAL PASS"
+        completed_at: "2026-10-11T21:38:29Z"
+        output_file: docs/bmad/gate-check.md
+  phase_4_implementation:
+    name: "Implementacija"
+    status: "in_progress" # Pripremljen plan; aplikacioni razvoj nije počeo.
+    workflows:
+      sprint_planning:
+        status: "required"
+        completed: true
+        output_file: docs/bmad/sprint-plan.md
+        completed_at: "2026-10-12T05:21:03Z"
+        planning_status: conditional
+      stories:
+        total: 7
+        completed: 0
+        in_progress: 0
+        story_list: [STORY-024, STORY-025, STORY-026, STORY-027, STORY-028, STORY-029, STORY-030]
+metrics:
+  total_workflows: 10
+  completed_workflows: 6
+  progress_percentage: 60
+  estimated_stories: 7
+  completed_stories: 0
